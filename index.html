@@ -1,15 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Final Project</title>
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+
     <script src="global.js" type="module"></script>
     <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <h1>Final Project</h1>
+
+    <div id="dive-overlay" aria-hidden="true"></div>
+
+    <main id="story">
+        <!-- ============================================ -->
+        <!-- SECTION 1 · INTRO / HOOK                       -->
+        <!-- ============================================ -->
+        <section id="intro" class="intro">
+            <!-- Animated background layers -->
+            <div class="intro__water" aria-hidden="true"></div>
+            <div class="intro__bubbles" aria-hidden="true">
+                <span class="bubble bubble--1"></span>
+                <span class="bubble bubble--2"></span>
+                <span class="bubble bubble--3"></span>
+                <span class="bubble bubble--4"></span>
+                <span class="bubble bubble--5"></span>
+                <span class="bubble bubble--6"></span>
+                <span class="bubble bubble--7"></span>
+            </div>
+
+            <!-- Text content -->
+            <div class="intro__content">
+                <p class="eyebrow">Alarming Coral-ations: How Climate Change Impacts Life Under The Sea</p>
+                <h1 class="intro__title">
+                    The reef <em>remembers</em><br />
+                    every degree.
+                </h1>
+                <p class="intro__lede">
+                    Between 2002 and 2024, the Great Barrier Reef endured six mass bleaching
+                    events — more than in the previous century combined. The water it lives
+                    in warmed by less than two degrees. This is the story of that small
+                    number, and what it took with it.
+                </p>
+                <div class="intro__scroll-cue">
+                    <span>Scroll to begin</span>
+                    <div class="intro__scroll-line"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- TRANSITION · breathing room for bubble rush   -->
+        <!-- ============================================ -->
+        <section id="dive" class="dive" aria-hidden="true"></section>
+
+        <!-- ============================================ -->
+        <!-- SECTION 2 · BASELINE → ANOMALY (placeholder)  -->
+        <!-- ============================================ -->
+        <section id="baseline" class="scrolly">
+            <div class="scrolly__graphic">
+                <div class="graphic-inner">
+                    <div id="map-stage" class="map-stage"></div>
+                </div>
+            </div>
+
+            <div class="scrolly__steps">
+                <div class="step" data-step="0">
+                    <h2 class="step__title">Where the reefs are</h2>
+                    <p>
+                        Coral reefs cover less than <strong>one percent</strong> of the ocean
+                        floor, yet they shelter roughly a quarter of all marine species. They
+                        cluster in a narrow tropical band — warm enough to grow, cool enough to
+                        survive.
+                    </p>
+                </div>
+
+                <div class="step" data-step="1">
+                    <h2 class="step__title">One reef, the size of a country</h2>
+                    <p>
+                        The Great Barrier Reef stretches <strong>2,300 kilometres</strong>
+                        along Australia's northeast coast. From orbit, it is the largest living
+                        structure on Earth.
+                    </p>
+                </div>
+
+                <div class="step" data-step="2">
+                    <h2 class="step__title">A baseline temperature</h2>
+                    <p>
+                        For most of the satellite era, sea surface temperature here held
+                        remarkably steady. Corals built their skeletons against a familiar
+                        rhythm of seasons.
+                    </p>
+                </div>
+
+                <div class="step" data-step="3">
+                    <h2 class="step__title">And then the anomaly</h2>
+                    <p>
+                        The map now shows the <em>difference</em> from that long-term average.
+                        Red means hotter than corals have ever known. Drag the slider to watch
+                        the ocean change colour year by year.
+                    </p>
+
+                    <div id="sst-controls" class="sst-controls">
+                        <div class="sst-controls__row">
+                            <button id="sst-toggle" class="sst-toggle">
+                                <span class="sst-toggle__label">Show as anomaly</span>
+                            </button>
+                            <span id="sst-year-display" class="sst-year-display">2003</span>
+                        </div>
+                        <input type="range" id="sst-year-slider" class="sst-year-slider" min="2003" max="2022"
+                            value="2003" step="1" />
+                    </div>
+
+                    <div id="sst-legend" class="sst-legend">
+                        <span id="sst-legend-min" class="sst-legend__label">22°C</span>
+                        <div id="sst-legend-bar" class="sst-legend__bar"></div>
+                        <span id="sst-legend-max" class="sst-legend__label">32°C</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
 </body>
+
 </html>

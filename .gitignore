@@ -1,1 +1,11 @@
 .DS_Store
+
+# Protect against raw MODIS data — too large
+*.nc
+*.hdf
+*.h5
+
+# Python/Jupyter artifacts
+__pycache__/
+.ipynb_checkpoints/
+*.pyc

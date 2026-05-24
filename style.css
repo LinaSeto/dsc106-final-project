@@ -1,0 +1,865 @@
+/* ============================================ */
+/*  DESIGN TOKENS — Bright Tropical Reef         */
+/* ============================================ */
+:root {
+  /* Ocean palette */
+  --c-teal-deep: #04546b;
+  --c-teal: #0c8ca8;
+  --c-teal-bright: #2bb8d4;
+  --c-teal-pale: #b8e8f0;
+  --c-aqua: #5fd9e3;
+
+  /* Coral / warm accents */
+  --c-coral: #ff7058;
+  --c-coral-soft: #ffb89c;
+  --c-sand: #f5e9d3;
+
+  /* Neutrals */
+  --c-bg: #f4fbfc;
+  --c-bg-alt: #e7f5f8;
+  --c-ink: #0a2935;
+  --c-ink-mute: #4a6d7a;
+  --c-ink-dim: #8aa5af;
+
+  /* Anomaly ramp */
+  --c-anom-cold: #1a6e9a;
+  --c-anom-neutral: #f0ede0;
+  --c-anom-hot: #d63a1f;
+
+  /* Type */
+  --f-display: "Fraunces", Georgia, serif;
+  --f-body: "Inter", -apple-system, system-ui, sans-serif;
+
+  /* Spacing */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2rem;
+  --s-5: 3rem;
+  --s-6: 5rem;
+  --s-7: 8rem;
+}
+
+/* ============================================ */
+/*  RESET & BASE                                  */
+/* ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--f-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--c-ink);
+}
+
+p {
+  margin: 0 0 var(--s-3) 0;
+}
+
+strong {
+  font-weight: 600;
+  color: var(--c-teal-deep);
+}
+
+em {
+  font-style: italic;
+  color: var(--c-coral);
+  font-variation-settings: "opsz" 144;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: var(--c-teal);
+  font-weight: 500;
+  margin-bottom: var(--s-3);
+}
+
+/* ============================================ */
+/*  SECTION 1 · INTRO                             */
+/* ============================================ */
+.intro {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-6) var(--s-4);
+  overflow: hidden;
+  isolation: isolate;
+
+  /* Base gradient — sunlit shallows fading down */
+  background: linear-gradient(180deg,
+      var(--c-teal-pale) 0%,
+      var(--c-teal-bright) 50%,
+      var(--c-teal-bright) 100%);
+  /* ← stays at teal-bright at bottom */
+}
+
+/* Layer 1: animated caustics (light dappling on water) */
+.intro__water {
+  position: absolute;
+  inset: -20%;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.18) 0%, transparent 25%),
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.12) 0%, transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(95, 217, 227, 0.25) 0%, transparent 25%);
+  filter: blur(40px);
+  animation: water-drift 14s ease-in-out infinite alternate;
+}
+
+@keyframes water-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(-3%, 2%) scale(1.05);
+  }
+}
+
+/* Layer 2: floating bubbles */
+.intro__bubbles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Fade out intro's decoration at its bottom edge for seamless transition */
+.intro::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 25vh;
+  background: linear-gradient(180deg,
+      transparent 0%,
+      var(--c-teal-bright) 100%);
+  z-index: 5;
+  /* above the water animation, below the content */
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.35) 35%,
+      rgba(255, 255, 255, 0.1) 70%,
+      rgba(255, 255, 255, 0.05) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset -2px -3px 6px rgba(43, 184, 212, 0.2),
+    0 0 8px rgba(255, 255, 255, 0.3);
+  animation: rise linear infinite;
+}
+
+/* Each bubble: position, size, speed, delay vary so they don't march in sync */
+.bubble--1 {
+  left: 8%;
+  width: 18px;
+  height: 18px;
+  animation-duration: 7s;
+  animation-delay: 0s;
+}
+
+.bubble--2 {
+  left: 18%;
+  width: 28px;
+  height: 28px;
+  animation-duration: 9s;
+  animation-delay: 2s;
+}
+
+.bubble--3 {
+  left: 32%;
+  width: 12px;
+  height: 12px;
+  animation-duration: 6s;
+  animation-delay: 1s;
+}
+
+.bubble--4 {
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  animation-duration: 11s;
+  animation-delay: 3s;
+}
+
+.bubble--5 {
+  left: 67%;
+  width: 16px;
+  height: 16px;
+  animation-duration: 7s;
+  animation-delay: 0.5s;
+}
+
+.bubble--6 {
+  left: 81%;
+  width: 24px;
+  height: 24px;
+  animation-duration: 8s;
+  animation-delay: 2.5s;
+}
+
+.bubble--7 {
+  left: 92%;
+  width: 10px;
+  height: 10px;
+  animation-duration: 5s;
+  animation-delay: 1.5s;
+}
+
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.8);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.95;
+  }
+
+  50% {
+    transform: translateY(-50vh) translateX(15px) scale(1);
+    opacity: 0.8;
+  }
+
+  90% {
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateY(-110vh) translateX(-10px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+/* Layer 3: content */
+.intro__content {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+  text-align: center;
+}
+
+.intro__title {
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--s-4);
+  color: var(--c-teal-deep);
+  font-variation-settings: "opsz" 144;
+}
+
+.intro__title em {
+  color: var(--c-coral);
+}
+
+.intro__lede {
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  color: var(--c-teal-deep);
+  max-width: 580px;
+  margin: 0 auto var(--s-6) auto;
+  line-height: 1.65;
+  opacity: 0.85;
+}
+
+/* Scroll cue */
+.intro__scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-teal-deep);
+  opacity: 0.6;
+}
+
+.intro__scroll-line {
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(180deg, var(--c-teal-deep) 0%, transparent 100%);
+  position: relative;
+  overflow: hidden;
+  opacity: 0.5;
+}
+
+.intro__scroll-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: var(--c-coral);
+  animation: scroll-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(400%);
+    opacity: 0;
+  }
+}
+
+/* ============================================ */
+/*  SCROLLYTELLING LAYOUT                         */
+/*  Two columns: sticky graphic | scrolling text */
+/* ============================================ */
+.scrolly {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding-bottom: var(--s-7);
+  background: var(--c-teal-bright);
+}
+
+.scrolly__graphic {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.graphic-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.graphic-inner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Scrolling text column */
+.scrolly__steps {
+  position: relative;
+  padding: 0 var(--s-5);
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 460px;
+  padding: var(--s-5) 0;
+  opacity: 0.3;
+  transition: opacity 0.6s ease;
+}
+
+.step.is-active {
+  opacity: 1;
+}
+
+.step__title {
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 500;
+  margin-bottom: var(--s-3);
+  color: var(--c-teal-deep);
+  font-variation-settings: "opsz" 144;
+}
+
+.step p {
+  font-size: 1.05rem;
+  color: var(--c-teal-deep);
+  opacity: 0.8;
+  line-height: 1.7;
+}
+
+.step strong {
+  color: var(--c-coral);
+  font-weight: 600;
+}
+
+/* Mobile: stack columns */
+@media (max-width: 900px) {
+  .scrolly {
+    grid-template-columns: 1fr;
+  }
+
+  .scrolly__graphic {
+    height: 60vh;
+  }
+
+  .scrolly__steps {
+    padding: 0 var(--s-4);
+  }
+
+  .step {
+    max-width: 100%;
+    min-height: 80vh;
+  }
+}
+
+/* ============================================ */
+/*  DIVE · empty transition section              */
+/* ============================================ */
+.dive {
+  position: relative;
+  height: 80vh;
+  background: var(--c-teal-bright);
+  /* matches both neighbors */
+}
+
+/* ============================================ */
+/*  DIVE OVERLAY · scroll-driven bubble layer    */
+/* ============================================ */
+#dive-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  /* JS will set this based on scroll */
+  transition: opacity 0.05s linear;
+  overflow: hidden;
+}
+
+/* Individual bubble — created by JS, animated by CSS */
+.dive-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.4) 35%,
+      rgba(255, 255, 255, 0.1) 75%,
+      rgba(255, 255, 255, 0.05) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset -2px -3px 6px rgba(43, 184, 212, 0.25),
+    0 0 8px rgba(255, 255, 255, 0.3);
+  bottom: -80px;
+  will-change: transform, opacity;
+  animation: dive-bubble-rise linear forwards;
+}
+
+@keyframes dive-bubble-rise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.5);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(-110vh) translateX(15px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* ============================================ */
+/*  SECTION 2 · MAP STAGE                        */
+/* ============================================ */
+.map-stage {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.map-stage svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Ocean — slightly lighter than the section bg to show contrast */
+.map-ocean {
+  fill: var(--c-teal-pale);
+  opacity: 0.4;
+}
+
+/* Land masses */
+.map-land {
+  fill: var(--c-sand);
+  stroke: var(--c-teal-deep);
+  stroke-width: 0.4px;
+  stroke-opacity: 0.3;
+}
+
+/* Subtle latitude/longitude lines */
+.map-graticule {
+  fill: none;
+  stroke: var(--c-teal-deep);
+  stroke-width: 0.4px;
+  stroke-opacity: 0.1;
+}
+
+/* Reef location dots */
+.reef-dot {
+  fill: var(--c-coral);
+  fill-opacity: 0.85;
+  stroke: white;
+  stroke-width: 1.5px;
+  stroke-opacity: 0.7;
+  cursor: pointer;
+  transition: fill-opacity 0.2s ease, stroke-width 0.2s ease;
+}
+
+.reef-dot:hover {
+  fill-opacity: 1;
+  stroke-width: 2.5px;
+}
+
+/* Tooltip — appears on dot hover */
+.reef-tooltip {
+  position: absolute;
+  background: white;
+  color: var(--c-teal-deep);
+  padding: var(--s-1) var(--s-2);
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(4, 84, 107, 0.25);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.reef-tooltip.is-visible {
+  opacity: 1;
+}
+
+/* ============================================ */
+/*  SECTION 2 · BRUSH ANIMATION                  */
+/* ============================================ */
+
+/* The pulsing GBR dot before brush starts */
+.reef-dot--gbr-active {
+  fill: white;
+  stroke: var(--c-coral);
+  stroke-width: 3px;
+}
+
+/* Pulse animation applied via class */
+.reef-dot--pulse {
+  animation: gbr-pulse 0.6s ease-in-out 2;
+  /* runs twice */
+}
+
+@keyframes gbr-pulse {
+
+  0%,
+  100% {
+    r: 6;
+    fill-opacity: 0.85;
+  }
+
+  50% {
+    r: 12;
+    fill-opacity: 1;
+  }
+}
+
+/* Brush rectangle — animated from a corner */
+.gbr-brush {
+  fill: rgba(255, 112, 88, 0.10);
+  stroke: var(--c-coral);
+  stroke-width: 2px;
+  stroke-dasharray: 6 4;
+  pointer-events: none;
+}
+
+/* Class-based dimming — overrides hover transitions reliably */
+.reef-dot.is-dimmed {
+  fill-opacity: 0.2 !important;
+  pointer-events: none;
+}
+
+/* ============================================ */
+/*  SECTION 2 · SST DATA OVERLAY                 */
+/* ============================================ */
+
+/* The SST data image, positioned over the brush area */
+.sst-image {
+  pointer-events: none;
+  /* tooltip handled by a transparent rect on top */
+  opacity: 0;
+  /* JS will fade it in */
+  transition: opacity 0.6s ease;
+}
+
+.sst-image.is-visible {
+  opacity: 1;
+}
+
+/* The desaturation/dim overlay covering the area outside the brush.
+   It's a path with a "hole" cut out where the brush is. */
+.spotlight-overlay {
+  fill: rgba(247, 247, 250, 0.65);
+  /* pale wash — slight dim without darkening */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.spotlight-overlay.is-visible {
+  opacity: 1;
+}
+
+/* Tooltip for the SST data area */
+.sst-tooltip {
+  position: absolute;
+  background: white;
+  color: var(--c-teal-deep);
+  padding: var(--s-2) var(--s-3);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(4, 84, 107, 0.25);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+  z-index: 10;
+  line-height: 1.4;
+}
+
+.sst-tooltip.is-visible {
+  opacity: 1;
+}
+
+.sst-tooltip__year {
+  font-family: var(--f-display);
+  font-size: 1.1rem;
+  display: block;
+}
+
+.sst-tooltip__value {
+  color: var(--c-coral);
+  font-weight: 600;
+}
+
+/* ============================================ */
+/*  SECTION 2 · SST CONTROLS                     */
+/*  Year slider + anomaly toggle                  */
+/* ============================================ */
+
+.sst-controls {
+  margin-top: var(--s-3);
+  padding: var(--s-3);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(4, 84, 107, 0.08);
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  max-width: 460px;
+}
+
+.sst-controls.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sst-controls__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--s-2);
+}
+
+.sst-year-display {
+  font-family: var(--f-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--c-teal-deep);
+  font-variation-settings: "opsz" 144;
+  line-height: 1;
+}
+
+.sst-toggle {
+  background: var(--c-teal-deep);
+  color: white;
+  border: none;
+  padding: var(--s-1) var(--s-3);
+  border-radius: 4px;
+  font-family: var(--f-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.sst-toggle:hover {
+  background: var(--c-coral);
+}
+
+.sst-toggle:active {
+  transform: scale(0.97);
+}
+
+.sst-toggle.is-anomaly {
+  background: var(--c-coral);
+}
+
+.sst-toggle.is-anomaly:hover {
+  background: var(--c-teal-deep);
+}
+
+.sst-year-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: linear-gradient(90deg,
+      var(--c-teal-bright) 0%,
+      var(--c-coral) 100%);
+  border-radius: 2px;
+  outline: none;
+}
+
+.sst-year-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border: 3px solid var(--c-teal-deep);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.1s ease;
+}
+
+.sst-year-slider::-webkit-slider-thumb:hover {
+  border-color: var(--c-coral);
+  transform: scale(1.15);
+}
+
+.sst-year-slider:active::-webkit-slider-thumb {
+  background: var(--c-teal-pale);
+}
+
+.sst-year-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border: 3px solid var(--c-teal-deep);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Disable interaction during the auto-animation */
+.sst-year-slider:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sst-year-slider:disabled::-webkit-slider-thumb {
+  border-color: var(--c-ink-dim);
+}
+
+/* ============================================ */
+/*  SECTION 2 · SST LEGEND                       */
+/* ============================================ */
+
+.sst-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.sst-legend__label {
+  font-size: 0.85rem;
+  color: var(--c-teal-deep);
+  font-family: var(--f-body);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  min-width: 2.5em;
+}
+
+.sst-legend__label:last-child {
+  text-align: right;
+}
+
+.sst-legend__bar {
+  flex: 1;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid rgba(4, 84, 107, 0.15);
+  /* Default colors set by JS to match current mode */
+}
+
+/* SST mode: inferno colormap */
+.sst-legend__bar.is-sst {
+  background: linear-gradient(90deg,
+    #000004 0%,
+    #420a68 25%,
+    #932667 50%,
+    #dd513a 75%,
+    #fca50a 90%,
+    #fcffa4 100%);
+}
+
+/* Anomaly mode: diverging blue → white → red */
+.sst-legend__bar.is-anomaly {
+  background: linear-gradient(90deg,
+    #2166ac 0%,
+    #67a9cf 25%,
+    #f7f7f7 50%,
+    #ef8a62 75%,
+    #b2182b 100%);
+}
