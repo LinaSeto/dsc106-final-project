@@ -100,6 +100,11 @@
                         remarkably steady. Corals built their skeletons against a familiar
                         rhythm of seasons.
                     </p>
+                    <div id="sst-legend-step2" class="sst-legend-standalone">
+                        <span id="sst-legend-step2-min" class="sst-legend__label">22°C</span>
+                        <div id="sst-legend-step2-bar" class="sst-legend__bar is-sst"></div>
+                        <span id="sst-legend-step2-max" class="sst-legend__label">32°C</span>
+                    </div>
                 </div>
 
                 <div class="step" data-step="3">
@@ -119,14 +124,512 @@
                         </div>
                         <input type="range" id="sst-year-slider" class="sst-year-slider" min="2003" max="2022"
                             value="2003" step="1" />
-                    </div>
 
-                    <div id="sst-legend" class="sst-legend">
-                        <span id="sst-legend-min" class="sst-legend__label">22°C</span>
-                        <div id="sst-legend-bar" class="sst-legend__bar"></div>
-                        <span id="sst-legend-max" class="sst-legend__label">32°C</span>
+                        <div id="sst-legend" class="sst-legend">
+                            <span id="sst-legend-min" class="sst-legend__label">22°C</span>
+                            <div id="sst-legend-bar" class="sst-legend__bar"></div>
+                            <span id="sst-legend-max" class="sst-legend__label">32°C</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- SECTION 3 · BLEACHING THRESHOLD                -->
+        <!-- ============================================ -->
+        <section id="bleaching" class="scrolly scrolly--bleach">
+            <div class="scrolly__graphic">
+                <div class="graphic-inner">
+                    <div id="bleach-stage" class="bleach-stage"></div>
+                </div>
+            </div>
+
+            <div class="scrolly__steps">
+                <div class="step" data-step="0">
+                    <h2 class="step__title">The summer of 2016</h2>
+                    <p>
+                        Zoom in to one place, one summer. Each point is the <strong>8-day mean</strong>
+                        sea surface temperature off Cairns, on the northern Great Barrier Reef.
+                        A whole year, one data point every week and a half.
+                    </p>
+                </div>
+
+                <div class="step" data-step="1">
+                    <h2 class="step__title">A line corals cannot cross</h2>
+                    <p>
+                        Above the dashed line — roughly <strong>1°C above the warmest month's
+                            historical average</strong> — corals begin to expel the algae living
+                        in their tissues. They turn ghost white. They are still alive, but
+                        starving.
+                    </p>
+                </div>
+
+                <div class="step" data-step="2">
+                    <h2 class="step__title">Six weeks above the threshold</h2>
+                    <p>
+                        In February and March 2016, the water at Cairns spent more than
+                        <strong>six consecutive weeks</strong> above the bleaching threshold,
+                        peaking at <strong>30.6°C</strong>. The reef did not recover.
+                    </p>
+                </div>
+
+                <div class="step" data-step="3">
+                    <h2 class="step__title">And it happened again</h2>
+                    <p>
+                        Six years later, in <em>2022</em>, summer started warm and stayed warm.
+                        December 2021 was already at the threshold. The peak wasn't as
+                        extreme as 2016, but the warmth lasted longer.
+                    </p>
+                </div>
+
+                <div class="step" data-step="4">
+                    <h2 class="step__title">A pattern, not a one-off</h2>
+                    <p>
+                        2016 was a massive, shocking bleaching event. Then it happened again
+                        in <em>2022</em>. And again, with less warning each time. Toggle below
+                        to compare the two summers.
+                    </p>
+
+                    <div id="bleach-toggle" class="bleach-toggle">
+                        <button class="bleach-toggle__btn is-active" data-year="2016">
+                            <span class="bleach-toggle__swatch bleach-toggle__swatch--2016"></span>
+                            2016
+                        </button>
+                        <button class="bleach-toggle__btn is-active" data-year="2022">
+                            <span class="bleach-toggle__swatch bleach-toggle__swatch--2022"></span>
+                            2022
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- SECTION · CASCADING EFFECTS                    -->
+        <!-- ============================================ -->
+        <section id="effects" class="effects">
+            <div class="effects__intro">
+                <p class="eyebrow">When reefs die, the loss cascades</p>
+                <h2 class="effects__title">
+                    A reef is never <em>just</em> a reef.
+                </h2>
+                <p class="effects__lede">
+                    The Great Barrier Reef shelters more than 9,000 known species and
+                    sustains the livelihoods of communities thousands of kilometres away.
+                    When it bleaches, the damage doesn't stay underwater.
+                    <strong>Click a card to read more.</strong>
+                </p>
+            </div>
+
+            <div class="effects__grid">
+                <!-- HUMAN IMPACT 1 -->
+                <div class="card card--human" data-card="food-scarcity" tabindex="0" role="button"
+                    aria-label="Card: Food scarcity">
+                    <div class="card__inner">
+                        <div class="card__face card__face--front">
+                            <span class="card__label">Human Impact</span>
+                            <div class="card__icon" aria-hidden="true">
+                                <!-- Fish icon -->
+                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 32 Q20 12, 38 32 Q20 52, 8 32 Z" fill="currentColor" opacity="0.85" />
+                                    <path d="M38 32 L56 20 L52 32 L56 44 Z" fill="currentColor" />
+                                    <circle cx="18" cy="28" r="2" fill="white" />
+                                </svg>
+                            </div>
+                            <h3 class="card__topic">Food Scarcity</h3>
+                            <span class="card__hint">Click to read</span>
+                        </div>
+                        <div class="card__face card__face--back">
+                            <span class="card__label">Human Impact</span>
+                            <h3 class="card__topic">Food Scarcity</h3>
+                            <p class="card__body">
+                                Coral reefs feed an estimated <strong>500 million people</strong>
+                                directly. After mass bleaching, reef fish biomass can drop by
+                                60–80% within five years. For coastal fishing communities,
+                                especially in the Indo-Pacific, this loss is measured in
+                                empty nets and rising food prices.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HUMAN IMPACT 2 -->
+                <div class="card card--human" data-card="coastal-protection" tabindex="0" role="button"
+                    aria-label="Card: Coastal protection">
+                    <div class="card__inner">
+                        <div class="card__face card__face--front">
+                            <span class="card__label">Human Impact</span>
+                            <div class="card__icon" aria-hidden="true">
+                                <!-- Wave + shore icon -->
+                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 36 Q14 28, 22 36 T40 36 T58 36" fill="none" stroke="currentColor"
+                                        stroke-width="3" stroke-linecap="round" />
+                                    <path d="M4 46 Q14 38, 22 46 T40 46 T58 46" fill="none" stroke="currentColor"
+                                        stroke-width="3" stroke-linecap="round" opacity="0.6" />
+                                    <rect x="6" y="52" width="52" height="6" fill="currentColor" opacity="0.4" />
+                                </svg>
+                            </div>
+                            <h3 class="card__topic">Coastal Protection</h3>
+                            <span class="card__hint">Click to read</span>
+                        </div>
+                        <div class="card__face card__face--back">
+                            <span class="card__label">Human Impact</span>
+                            <h3 class="card__topic">Coastal Protection</h3>
+                            <p class="card__body">
+                                Healthy reefs absorb up to <strong>97% of wave energy</strong>
+                                before it reaches shore. Without them, coastal flooding damage
+                                roughly doubles during storms. For low-lying island nations
+                                and densely populated coasts, the reef is the only barrier
+                                between communities and the open ocean.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ECOSYSTEM IMPACT 1 -->
+                <div class="card card--ecosystem" data-card="habitat-loss" tabindex="0" role="button"
+                    aria-label="Card: Habitat loss">
+                    <div class="card__inner">
+                        <div class="card__face card__face--front">
+                            <span class="card__label">Ecosystem Impact</span>
+                            <div class="card__icon" aria-hidden="true">
+                                <!-- Coral / branching icon -->
+                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M32 56 L32 32 M32 32 L20 22 M32 32 L44 22 M20 22 L14 14 M20 22 L26 14 M44 22 L38 14 M44 22 L50 14"
+                                        stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none" />
+                                    <circle cx="14" cy="14" r="3" fill="currentColor" />
+                                    <circle cx="26" cy="14" r="3" fill="currentColor" />
+                                    <circle cx="38" cy="14" r="3" fill="currentColor" />
+                                    <circle cx="50" cy="14" r="3" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <h3 class="card__topic">Habitat Loss</h3>
+                            <span class="card__hint">Click to read</span>
+                        </div>
+                        <div class="card__face card__face--back">
+                            <span class="card__label">Ecosystem Impact</span>
+                            <h3 class="card__topic">Habitat Loss</h3>
+                            <p class="card__body">
+                                A <strong>quarter of all marine species</strong> spend part of
+                                their lives on coral reefs — using them as a nursery, a
+                                hunting ground, or a refuge. When the coral skeleton breaks
+                                down, the community above it disperses. Fish, octopuses,
+                                sea turtles, sharks — all lose the structure their lives
+                                depend on.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ECOSYSTEM IMPACT 2 -->
+                <div class="card card--ecosystem" data-card="food-web" tabindex="0" role="button"
+                    aria-label="Card: Food web collapse">
+                    <div class="card__inner">
+                        <div class="card__face card__face--front">
+                            <span class="card__label">Ecosystem Impact</span>
+                            <div class="card__icon" aria-hidden="true">
+                                <!-- Connected nodes / web icon -->
+                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="16" cy="16" r="5" fill="currentColor" />
+                                    <circle cx="48" cy="16" r="5" fill="currentColor" />
+                                    <circle cx="32" cy="32" r="6" fill="currentColor" />
+                                    <circle cx="16" cy="48" r="5" fill="currentColor" />
+                                    <circle cx="48" cy="48" r="5" fill="currentColor" />
+                                    <line x1="16" y1="16" x2="32" y2="32" stroke="currentColor" stroke-width="2" />
+                                    <line x1="48" y1="16" x2="32" y2="32" stroke="currentColor" stroke-width="2" />
+                                    <line x1="16" y1="48" x2="32" y2="32" stroke="currentColor" stroke-width="2" />
+                                    <line x1="48" y1="48" x2="32" y2="32" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <h3 class="card__topic">Food Web Collapse</h3>
+                            <span class="card__hint">Click to read</span>
+                        </div>
+                        <div class="card__face card__face--back">
+                            <span class="card__label">Ecosystem Impact</span>
+                            <h3 class="card__topic">Food Web Collapse</h3>
+                            <p class="card__body">
+                                Reef fish are prey for larger predators, which are prey for
+                                still larger ones. When the reef collapses, the loss
+                                <strong>cascades outward</strong> — to open-ocean species,
+                                seabirds, marine mammals, and eventually to commercial
+                                fisheries hundreds of kilometres away.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- SECTION · CONCLUSION                          -->
+        <!-- ============================================ -->
+        <section id="conclusion" class="conclusion">
+
+            <!-- Coral framing — vertical reefs on each side, gradient applied via SVG -->
+            <div class="conclusion__reef conclusion__reef--left" aria-hidden="true">
+                <svg viewBox="0 0 160 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMax meet">
+                    <defs>
+                        <linearGradient id="reef-gradient-left" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0"
+                            y2="800">
+                            <stop offset="0%" stop-color="#ff7058" stop-opacity="0.95" />
+                            <stop offset="40%" stop-color="#ff9070" stop-opacity="0.85" />
+                            <stop offset="70%" stop-color="#ffc0a8" stop-opacity="0.7" />
+                            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.4" />
+                        </linearGradient>
+                    </defs>
+                    <g stroke="url(#reef-gradient-left)" fill="url(#reef-gradient-left)">
+                        <!-- Straight vertical trunk -->
+                        <path d="M 80 800 L 80 30" stroke-width="9" stroke-linecap="round" fill="none" />
+
+                        <!-- Primary V-branches (original set) -->
+                        <path d="M 80 720 L 55 700 M 80 720 L 105 700
+           M 80 640 L 50 620 M 80 560 L 50 540 M 80 560 L 110 540
+           M 80 470 L 55 450 M 80 430 L 115 420
+           M 80 310 L 50 290 M 80 310 L 110 290
+           M 80 230 L 55 200 M 80 190 L 115 170
+           M 80 150 L 45 130 M 80 110 L 115 90
+           M 80 70 L 45 50 M 80 30 L 110 10" stroke-width="6" stroke-linecap="round" fill="none" />
+
+                        <!-- Additional primary branches at intermediate heights -->
+                        <path d="M 80 760 L 105 745 M 80 760 L 55 745
+           M 80 680 L 115 665 M 80 680 L 50 665
+           M 80 600 L 50 585 M 80 600 L 105 590
+           M 80 520 L 110 505 M 80 520 L 55 505
+           M 80 400 L 50 385 M 80 400 L 115 390
+           M 80 360 L 105 345 M 80 360 L 50 345
+           M 80 270 L 110 255 M 80 270 L 50 260
+           M 80 130 L 115 115 M 80 130 L 50 115
+           M 80 90 L 50 75" stroke-width="5" stroke-linecap="round" fill="none" />
+
+                        <!-- Secondary smaller forks off the primary branches (for organic density) -->
+                        <path d="M 55 700 L 40 690 M 55 700 L 60 685
+           M 105 700 L 120 685 M 105 700 L 100 685
+           M 50 620 L 35 612 M 50 620 L 60 608
+           M 50 540 L 35 530 M 110 540 L 125 530
+           M 55 450 L 45 438 M 115 420 L 128 410
+           M 50 290 L 40 278 M 110 290 L 120 278
+           M 115 170 L 130 158 M 55 200 L 40 188
+           M 45 130 L 30 118 M 115 90 L 130 78
+           M 45 50 L 30 38 M 110 10 L 125 0" stroke-width="3.5" stroke-linecap="round" fill="none" />
+
+                        <!-- Prominent polyps along trunk -->
+                        <circle cx="80" cy="720" r="6" />
+                        <circle cx="80" cy="640" r="6" />
+                        <circle cx="80" cy="560" r="6" />
+                        <circle cx="80" cy="470" r="6" />
+                        <circle cx="80" cy="310" r="6" />
+                        <circle cx="80" cy="230" r="6" />
+                        <circle cx="80" cy="150" r="6" />
+                        <circle cx="80" cy="70" r="6" />
+                        <circle cx="80" cy="400" r="6" />
+                        <circle cx="80" cy="600" r="6" />
+                        <circle cx="80" cy="130" r="6" />
+
+                        <!-- Branch-tip polyps -->
+                        <circle cx="55" cy="700" r="4" />
+                        <circle cx="105" cy="700" r="4" />
+                        <circle cx="50" cy="620" r="4" />
+                        <circle cx="50" cy="540" r="4" />
+                        <circle cx="110" cy="540" r="4" />
+                        <circle cx="55" cy="450" r="4" />
+                        <circle cx="115" cy="420" r="4" />
+                        <circle cx="50" cy="290" r="4" />
+                        <circle cx="110" cy="290" r="4" />
+                        <circle cx="55" cy="200" r="4" />
+                        <circle cx="115" cy="170" r="4" />
+                        <circle cx="45" cy="130" r="4" />
+                        <circle cx="115" cy="90" r="4" />
+                        <circle cx="45" cy="50" r="4" />
+                        <circle cx="110" cy="10" r="4" />
+                        <circle cx="105" cy="745" r="3.5" />
+                        <circle cx="55" cy="745" r="3.5" />
+                        <circle cx="115" cy="665" r="3.5" />
+                        <circle cx="50" cy="665" r="3.5" />
+                        <circle cx="50" cy="585" r="3.5" />
+                        <circle cx="105" cy="590" r="3.5" />
+                        <circle cx="110" cy="505" r="3.5" />
+                        <circle cx="55" cy="505" r="3.5" />
+                        <circle cx="50" cy="385" r="3.5" />
+                        <circle cx="115" cy="390" r="3.5" />
+                        <circle cx="105" cy="345" r="3.5" />
+                        <circle cx="50" cy="345" r="3.5" />
+                        <circle cx="110" cy="255" r="3.5" />
+                        <circle cx="50" cy="260" r="3.5" />
+                        <circle cx="115" cy="115" r="3.5" />
+                        <circle cx="50" cy="115" r="3.5" />
+                        <circle cx="50" cy="75" r="3.5" />
+
+                        <!-- Tip polyps on the small secondary forks -->
+                        <circle cx="40" cy="690" r="2.5" />
+                        <circle cx="60" cy="685" r="2.5" />
+                        <circle cx="120" cy="685" r="2.5" />
+                        <circle cx="100" cy="685" r="2.5" />
+                        <circle cx="35" cy="612" r="2.5" />
+                        <circle cx="60" cy="608" r="2.5" />
+                        <circle cx="35" cy="530" r="2.5" />
+                        <circle cx="125" cy="530" r="2.5" />
+                        <circle cx="45" cy="438" r="2.5" />
+                        <circle cx="128" cy="410" r="2.5" />
+                        <circle cx="40" cy="278" r="2.5" />
+                        <circle cx="120" cy="278" r="2.5" />
+                        <circle cx="130" cy="158" r="2.5" />
+                        <circle cx="40" cy="188" r="2.5" />
+                        <circle cx="30" cy="118" r="2.5" />
+                        <circle cx="130" cy="78" r="2.5" />
+                        <circle cx="30" cy="38" r="2.5" />
+                    </g>
+                </svg>
+            </div>
+
+            <div class="conclusion__reef conclusion__reef--right" aria-hidden="true">
+                <svg viewBox="0 0 160 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax meet">
+                    <defs>
+                        <linearGradient id="reef-gradient-right" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0"
+                            y2="800">
+                            <stop offset="0%" stop-color="#ff7058" stop-opacity="0.95" />
+                            <stop offset="40%" stop-color="#ff9070" stop-opacity="0.85" />
+                            <stop offset="70%" stop-color="#ffc0a8" stop-opacity="0.7" />
+                            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.4" />
+                        </linearGradient>
+                    </defs>
+                    <g stroke="url(#reef-gradient-right)" fill="url(#reef-gradient-right)">
+                        <!-- Straight vertical trunk -->
+                        <path d="M 80 800 L 80 30" stroke-width="9" stroke-linecap="round" fill="none" />
+
+                        <!-- Primary V-branches (original set, mirrored) -->
+                        <path d="M 80 720 L 105 700 M 80 720 L 55 700
+           M 80 640 L 110 620 M 80 560 L 110 540 M 80 560 L 50 540
+           M 80 470 L 105 450 M 80 430 L 45 420
+           M 80 310 L 110 290 M 80 310 L 50 290
+           M 80 230 L 105 200 M 80 190 L 45 170
+           M 80 150 L 115 130 M 80 110 L 45 90
+           M 80 70 L 115 50 M 80 30 L 50 10" stroke-width="6" stroke-linecap="round" fill="none" />
+
+                        <!-- Additional primary branches -->
+                        <path d="M 80 760 L 55 745 M 80 760 L 105 745
+           M 80 680 L 45 665 M 80 680 L 110 665
+           M 80 600 L 110 585 M 80 600 L 55 590
+           M 80 520 L 50 505 M 80 520 L 105 505
+           M 80 400 L 110 385 M 80 400 L 45 390
+           M 80 360 L 55 345 M 80 360 L 110 345
+           M 80 270 L 50 255 M 80 270 L 110 260
+           M 80 130 L 45 115 M 80 130 L 110 115
+           M 80 90 L 110 75" stroke-width="5" stroke-linecap="round" fill="none" />
+
+                        <!-- Secondary smaller forks -->
+                        <path d="M 105 700 L 120 690 M 105 700 L 100 685
+           M 55 700 L 40 685 M 55 700 L 60 685
+           M 110 620 L 125 612 M 110 620 L 100 608
+           M 110 540 L 125 530 M 50 540 L 35 530
+           M 105 450 L 115 438 M 45 420 L 32 410
+           M 110 290 L 120 278 M 50 290 L 40 278
+           M 45 170 L 30 158 M 105 200 L 120 188
+           M 115 130 L 130 118 M 45 90 L 30 78
+           M 115 50 L 130 38 M 50 10 L 35 0" stroke-width="3.5" stroke-linecap="round" fill="none" />
+
+                        <!-- Prominent polyps along trunk -->
+                        <circle cx="80" cy="720" r="6" />
+                        <circle cx="80" cy="640" r="6" />
+                        <circle cx="80" cy="560" r="6" />
+                        <circle cx="80" cy="470" r="6" />
+                        <circle cx="80" cy="310" r="6" />
+                        <circle cx="80" cy="230" r="6" />
+                        <circle cx="80" cy="150" r="6" />
+                        <circle cx="80" cy="70" r="6" />
+                        <circle cx="80" cy="400" r="6" />
+                        <circle cx="80" cy="600" r="6" />
+                        <circle cx="80" cy="130" r="6" />
+
+                        <!-- Branch-tip polyps -->
+                        <circle cx="105" cy="700" r="4" />
+                        <circle cx="55" cy="700" r="4" />
+                        <circle cx="110" cy="620" r="4" />
+                        <circle cx="110" cy="540" r="4" />
+                        <circle cx="50" cy="540" r="4" />
+                        <circle cx="105" cy="450" r="4" />
+                        <circle cx="45" cy="420" r="4" />
+                        <circle cx="110" cy="290" r="4" />
+                        <circle cx="50" cy="290" r="4" />
+                        <circle cx="105" cy="200" r="4" />
+                        <circle cx="45" cy="170" r="4" />
+                        <circle cx="115" cy="130" r="4" />
+                        <circle cx="45" cy="90" r="4" />
+                        <circle cx="115" cy="50" r="4" />
+                        <circle cx="50" cy="10" r="4" />
+                        <circle cx="55" cy="745" r="3.5" />
+                        <circle cx="105" cy="745" r="3.5" />
+                        <circle cx="45" cy="665" r="3.5" />
+                        <circle cx="110" cy="665" r="3.5" />
+                        <circle cx="110" cy="585" r="3.5" />
+                        <circle cx="55" cy="590" r="3.5" />
+                        <circle cx="50" cy="505" r="3.5" />
+                        <circle cx="105" cy="505" r="3.5" />
+                        <circle cx="110" cy="385" r="3.5" />
+                        <circle cx="45" cy="390" r="3.5" />
+                        <circle cx="55" cy="345" r="3.5" />
+                        <circle cx="110" cy="345" r="3.5" />
+                        <circle cx="50" cy="255" r="3.5" />
+                        <circle cx="110" cy="260" r="3.5" />
+                        <circle cx="45" cy="115" r="3.5" />
+                        <circle cx="110" cy="115" r="3.5" />
+                        <circle cx="110" cy="75" r="3.5" />
+
+                        <!-- Tip polyps on the small secondary forks -->
+                        <circle cx="120" cy="690" r="2.5" />
+                        <circle cx="100" cy="685" r="2.5" />
+                        <circle cx="40" cy="685" r="2.5" />
+                        <circle cx="60" cy="685" r="2.5" />
+                        <circle cx="125" cy="612" r="2.5" />
+                        <circle cx="100" cy="608" r="2.5" />
+                        <circle cx="125" cy="530" r="2.5" />
+                        <circle cx="35" cy="530" r="2.5" />
+                        <circle cx="115" cy="438" r="2.5" />
+                        <circle cx="32" cy="410" r="2.5" />
+                        <circle cx="120" cy="278" r="2.5" />
+                        <circle cx="40" cy="278" r="2.5" />
+                        <circle cx="30" cy="158" r="2.5" />
+                        <circle cx="120" cy="188" r="2.5" />
+                        <circle cx="130" cy="118" r="2.5" />
+                        <circle cx="30" cy="78" r="2.5" />
+                        <circle cx="130" cy="38" r="2.5" />
+                    </g>
+                </svg>
+            </div>
+
+
+            <div class="conclusion__box">
+                <p class="eyebrow">A pattern, not a place</p>
+
+                <h2 class="conclusion__title">
+                    A reef can survive <em>one</em> bleaching.<br />
+                    Sometimes two.
+                </h2>
+
+                <div class="conclusion__body">
+                    <p>
+                        What's happened on the Great Barrier Reef is happening everywhere —
+                        the Caribbean, the Maldives, the Coral Triangle, the Red Sea. In
+                        <strong>1998</strong>, the world saw its first global bleaching
+                        event. In <strong>2010</strong>, the second. The fourth, declared
+                        in <strong>2024</strong>, is still unfolding. The intervals
+                        between events are shrinking faster than corals can rebuild.
+                    </p>
+
+                    <p>
+                        Corals grow slowly — a tabletop colony can take decades to mature.
+                        When mass bleaching arrives every few years, there is no longer
+                        time to recover between events.
+                    </p>
+
+                    <p class="conclusion__handoff">
+                        Below, you can explore which reefs around the world have warmed
+                        the most.
+                    </p>
+                </div>
+
+
             </div>
         </section>
 

@@ -59,7 +59,7 @@ let sstState = {
     autoAnimationId: null,
     autoAnimationDone: false,
     pixelData: null,
-    pixelDataKey: null, 
+    pixelDataKey: null,
 };
 
 async function loadSSTMetadata() {
@@ -78,16 +78,15 @@ async function loadSSTMetadata() {
 /* ============================================ */
 
 function initScrollytelling() {
-    const scroller = scrollama();
-
-    scroller
+    // ===== Section 2 (map / SST / anomaly) =====
+    const baselineScroller = scrollama();
+    baselineScroller
         .setup({
             step: "#baseline .step",
-            offset: 0.5,    // step becomes active when its top crosses 50% viewport
-            //   debug: true,  // uncomment to see scrollama's trigger lines
+            offset: 0.5,
         })
         .onStepEnter((response) => {
-            console.log("Step entered:", response.element.dataset.step);
+            console.log("Section 2 step entered:", response.element.dataset.step);
             response.element.classList.add("is-active");
             const stepIdx = +response.element.dataset.step;
             mapTransitionTo(stepIdx);
@@ -96,7 +95,410 @@ function initScrollytelling() {
             response.element.classList.remove("is-active");
         });
 
-    window.addEventListener("resize", () => scroller.resize());
+    // ===== Section 3 (bleaching chart) =====
+    const bleachScroller = scrollama();
+    bleachScroller
+        .setup({
+            step: "#bleaching .step",
+            offset: 0.5,
+        })
+        .onStepEnter((response) => {
+            console.log("Section 3 step entered:", response.element.dataset.step);
+            response.element.classList.add("is-active");
+            const stepIdx = +response.element.dataset.step;
+            // We'll write bleachTransitionTo in the next round
+            if (typeof bleachTransitionTo === "function") {
+                bleachTransitionTo(stepIdx);
+            }
+            // CRITICAL: hide Section 2's overlays so they don't bleed into Section 3
+            hideSSTOverlay();
+            hideSSTControls();
+            const step2Legend = document.getElementById("sst-legend-step2");
+            if (step2Legend) step2Legend.classList.remove("is-visible");
+        })
+        .onStepExit((response) => {
+            response.element.classList.remove("is-active");
+        });
+
+    window.addEventListener("resize", () => {
+        baselineScroller.resize();
+        bleachScroller.resize();
+    });
+}
+
+/* ============================================ */
+/*  SECTION 3 · BLEACHING CHART                  */
+/* ============================================ */
+
+let bleachState = {
+    data: null,             // loaded from bleaching_8day.json
+    svg: null,
+    width: 0,
+    height: 0,
+    margin: { top: 40, right: 40, bottom: 50, left: 70 },
+    xScale: null,
+    yScale: null,
+    initialized: false,
+    activeYears: { "2016": true, "2022": true },  // toggle state for Step 4
+};
+
+async function loadBleachData() {
+    try {
+        bleachState.data = await d3.json("docs/modis_data/bleaching_8day.json");
+        console.log("Bleach data loaded:", bleachState.data);
+    } catch (err) {
+        console.error("Failed to load bleach data:", err);
+    }
+}
+
+function initBleachChart() {
+    if (!bleachState.data) {
+        console.warn("Bleach data not loaded yet");
+        return;
+    }
+    if (bleachState.initialized) return;
+
+    const stage = document.getElementById("bleach-stage");
+    if (!stage) return;
+
+    const rect = stage.getBoundingClientRect();
+    bleachState.width = rect.width;
+    bleachState.height = rect.height;
+
+    const { width, height, margin } = bleachState;
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
+
+    // Create SVG
+    bleachState.svg = d3.select(stage).append("svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const root = bleachState.svg.append("g")
+        .attr("class", "chart-root")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    // Convert dates: all years projected onto a single calendar year for overlay
+    const parseDate = d3.timeParse("%Y-%m-%d");
+    const allData = [...bleachState.data.events["2016"], ...bleachState.data.events["2022"]];
+    allData.forEach(d => {
+        const parsed = parseDate(d.date);
+        // Project onto year 2000 (a common reference year) so both years share an x-axis
+        d.dateObj = new Date(2000, parsed.getMonth(), parsed.getDate());
+        d.tempC = d.sst;
+    });
+
+    // Scales
+    bleachState.xScale = d3.scaleTime()
+        .domain([new Date(2000, 0, 1), new Date(2000, 11, 31)])
+        .range([0, innerW]);
+
+    bleachState.yScale = d3.scaleLinear()
+        .domain([22, 32])
+        .range([innerH, 0]);
+
+    // === Layers (back to front) ===
+
+    // 1. Danger zone shading (above threshold)
+    const threshold = bleachState.data.bleaching_threshold_c;
+    root.append("rect")
+        .attr("class", "bleach-danger-zone")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", innerW)
+        .attr("height", bleachState.yScale(threshold));
+
+    // 2. Axes
+    const xAxis = d3.axisBottom(bleachState.xScale)
+        .ticks(d3.timeMonth.every(1))
+        .tickFormat(d3.timeFormat("%b"))
+        .tickSizeOuter(0);
+
+    const yAxis = d3.axisLeft(bleachState.yScale)
+        .ticks(5)
+        .tickFormat(d => `${d}°`)
+        .tickSizeOuter(0);
+
+    root.append("g")
+        .attr("class", "bleach-axis")
+        .attr("transform", `translate(0,${innerH})`)
+        .call(xAxis);
+
+    root.append("g")
+        .attr("class", "bleach-axis")
+        .call(yAxis);
+
+    root.append("text")
+        .attr("class", "bleach-axis-label")
+        .attr("text-anchor", "middle")
+        .attr("transform", `translate(-35,${innerH / 2}) rotate(-90)`)
+        .text("Sea surface temperature");
+
+    // 3. Threshold line + label
+    root.append("line")
+        .attr("class", "bleach-threshold-line")
+        .attr("x1", 0).attr("x2", innerW)
+        .attr("y1", bleachState.yScale(threshold))
+        .attr("y2", bleachState.yScale(threshold));
+
+    root.append("text")
+        .attr("class", "bleach-threshold-label")
+        .attr("x", innerW / 2)
+        .attr("y", bleachState.yScale(threshold) - 8)
+        .attr("text-anchor", "middle")
+        .text(`Bleaching threshold · ${threshold}°C`);
+
+    // 4. Lines and points (per year)
+    const lineGen = d3.line()
+        .x(d => bleachState.xScale(d.dateObj))
+        .y(d => bleachState.yScale(d.tempC))
+        .curve(d3.curveMonotoneX);
+
+    ["2016", "2022"].forEach(year => {
+        const yearData = bleachState.data.events[year]
+            .filter(d => d.sst !== null)
+            .map(d => ({
+                ...d,
+                dateObj: new Date(2000,
+                    parseDate(d.date).getMonth(),
+                    parseDate(d.date).getDate()),
+                tempC: d.sst,
+            }));
+
+        // Line
+        root.append("path")
+            .datum(yearData)
+            .attr("class", `bleach-line bleach-line--${year}`)
+            .attr("d", lineGen);
+
+        // Points
+        root.append("g")
+            .attr("class", `bleach-points bleach-points--${year}`)
+            .selectAll("circle")
+            .data(yearData)
+            .enter()
+            .append("circle")
+            .attr("class", `bleach-point bleach-point--${year}`)
+            .attr("cx", d => bleachState.xScale(d.dateObj))
+            .attr("cy", d => bleachState.yScale(d.tempC))
+            .attr("r", 0)
+            .on("mousemove", handleBleachHover)
+            .on("mouseleave", handleBleachLeave);
+    });
+
+    // 5. DHW annotation (Step 2 reveal)
+    const annoG = root.append("g").attr("class", "bleach-annotation");
+
+    // Position: pointing at the late-Feb 2016 peak
+    const annoX = bleachState.xScale(new Date(2000, 1, 21.5));
+    const annoY = bleachState.yScale(30.6);
+
+    // The vertical line pointing down from text to peak — raise the start
+    annoG.append("line")
+        .attr("x1", annoX)
+        .attr("y1", annoY - 40)       // line starts higher up
+        .attr("x2", annoX)
+        .attr("y2", annoY - 5);       // ends just above the point
+
+    // Primary text — starts AT the line (text-anchor: start), positioned to the right
+    annoG.append("text")
+        .attr("x", annoX - 15)         // 6px to the right of the line
+        .attr("y", annoY - 60)        // above the line top
+        .attr("text-anchor", "start") // text begins at this x position
+        .text("Peak: 30.6°C");
+
+    // Secondary text — same anchoring, below the primary
+    annoG.append("text")
+        .attr("x", annoX - 15)
+        .attr("y", annoY - 45)
+        .attr("text-anchor", "start")
+        .style("font-size", "11px")
+        .style("font-family", "var(--f-body)")
+        .style("font-style", "normal")
+        .style("fill", "var(--c-ink-mute)")
+        .text("six 8-day windows above threshold");
+
+    // 5b. 2022 annotation (Step 3 reveal)
+    const anno2022G = root.append("g").attr("class", "bleach-annotation-2022");
+
+    // Position: pointing at the early Jan 2022 peak
+    const anno2022X = bleachState.xScale(new Date(2000, 0, 4.8));   // early Jan
+    const anno2022Y = bleachState.yScale(30.6);                    // 2022's early-Jan peak
+
+    anno2022G.append("text")
+        .attr("x", anno2022X + 6)
+        .attr("y", anno2022Y - 60)
+        .attr("text-anchor", "start")
+        .text("And again in 2022");
+
+    anno2022G.append("text")
+        .attr("x", anno2022X + 6)
+        .attr("y", anno2022Y - 45)
+        .attr("text-anchor", "start")
+        .style("font-size", "11px")
+        .style("font-family", "var(--f-body)")
+        .style("font-style", "normal")
+        .style("fill", "var(--c-ink-mute)")
+        .text("seven 8-day windows above threshold!");
+
+    // 6. Tooltip element
+    if (!document.getElementById("bleach-tooltip")) {
+        d3.select(stage).append("div")
+            .attr("class", "bleach-tooltip")
+            .attr("id", "bleach-tooltip");
+    }
+
+    bleachState.initialized = true;
+}
+
+function bleachTransitionTo(stepIdx) {
+    if (!bleachState.initialized) initBleachChart();
+    if (!bleachState.svg) return;
+
+    const svg = bleachState.svg;
+
+    // STEP 0: only 2016, no threshold yet
+    if (stepIdx === 0) {
+        showYear("2016", true);
+        showYear("2022", false);
+        svg.selectAll(".bleach-threshold-line").classed("is-visible", false);
+        svg.selectAll(".bleach-threshold-label").classed("is-visible", false);
+        svg.selectAll(".bleach-danger-zone").classed("is-visible", false);
+        svg.selectAll(".bleach-annotation").classed("is-visible", false);
+        svg.selectAll(".bleach-annotation-2022").classed("is-visible", false);
+        resetPointHighlight();
+    }
+
+    // STEP 1: threshold appears, points above it recolor
+    if (stepIdx === 1) {
+        showYear("2016", true);
+        showYear("2022", false);
+        svg.selectAll(".bleach-threshold-line").classed("is-visible", true);
+        svg.selectAll(".bleach-threshold-label").classed("is-visible", true);
+        svg.selectAll(".bleach-danger-zone").classed("is-visible", false);
+        svg.selectAll(".bleach-annotation").classed("is-visible", false);
+        svg.selectAll(".bleach-annotation-2022").classed("is-visible", false);
+        highlightAboveThreshold();
+    }
+
+    // STEP 2: danger zone + annotation
+    if (stepIdx === 2) {
+        showYear("2016", true);
+        showYear("2022", false);
+        svg.selectAll(".bleach-threshold-line").classed("is-visible", true);
+        svg.selectAll(".bleach-threshold-label").classed("is-visible", true);
+        svg.selectAll(".bleach-danger-zone").classed("is-visible", true);
+        svg.selectAll(".bleach-annotation").classed("is-visible", true);
+        svg.selectAll(".bleach-annotation-2022").classed("is-visible", false);
+    }
+
+    // STEP 3: 2022 fades in alongside 2016
+    if (stepIdx === 3) {
+        showYear("2016", true);
+        showYear("2022", true);
+        svg.selectAll(".bleach-threshold-line").classed("is-visible", true);
+        svg.selectAll(".bleach-threshold-label").classed("is-visible", true);
+        svg.selectAll(".bleach-danger-zone").classed("is-visible", true);
+        svg.selectAll(".bleach-annotation").classed("is-visible", false);  // hide 2016-specific annotation
+        svg.selectAll(".bleach-annotation-2022").classed("is-visible", true);
+        highlightAboveThreshold();
+    }
+
+    // STEP 4: both years, toggle becomes active
+    if (stepIdx === 4) {
+        // Use the toggle state instead of forcing both on
+        showYear("2016", bleachState.activeYears["2016"]);
+        showYear("2022", bleachState.activeYears["2022"]);
+        svg.selectAll(".bleach-threshold-line").classed("is-visible", true);
+        svg.selectAll(".bleach-threshold-label").classed("is-visible", true);
+        svg.selectAll(".bleach-danger-zone").classed("is-visible", true);
+        svg.selectAll(".bleach-annotation").classed("is-visible", false);
+        svg.selectAll(".bleach-annotation-2022").classed("is-visible", false);
+    }
+}
+
+
+function showYear(year, visible) {
+    const svg = bleachState.svg;
+
+    // Lines: use visibility (instant) — no fade transition
+    svg.selectAll(`.bleach-line--${year}`)
+        .classed("is-visible", visible)
+        // .style("opacity", null)
+        .style("visibility", visible ? "visible" : "hidden");
+
+    // Points group: also use visibility (instant)
+    svg.selectAll(`.bleach-points--${year}`)
+        .style("visibility", visible ? "visible" : "hidden");
+
+    // Points radius: transition normally
+    svg.selectAll(`.bleach-points--${year} circle`)
+        .transition()
+        .duration(600)
+        .attr("r", visible ? 4 : 0);
+}
+
+function highlightAboveThreshold() {
+    const threshold = bleachState.data.bleaching_threshold_c;
+    bleachState.svg.selectAll(".bleach-point")
+        .transition()
+        .duration(500)
+        .attr("r", 4)
+        .style("opacity", d => d.tempC >= threshold ? 1 : 0.45);
+
+    // Fade the line stroke (the whole line, since it's a single path)
+    bleachState.svg.selectAll(".bleach-line")
+        .transition()
+        .duration(500)
+        .style("opacity", 0.5);
+}
+
+function resetPointHighlight() {
+    bleachState.svg.selectAll(".bleach-point")
+        .transition()
+        .duration(500)
+        .attr("r", 4)
+        .style("opacity", 1);
+    bleachState.svg.selectAll(".bleach-line")
+        .transition()
+        .duration(500)
+        .style("opacity", 1);
+}
+
+function initBleachToggle() {
+    const buttons = document.querySelectorAll("#bleach-toggle .bleach-toggle__btn");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const year = btn.dataset.year;
+            btn.classList.toggle("is-active");
+            bleachState.activeYears[year] = btn.classList.contains("is-active");
+            showYear(year, bleachState.activeYears[year]);
+        });
+    });
+}
+
+function handleBleachHover(event, d) {
+    const tooltip = document.getElementById("bleach-tooltip");
+    const stage = document.getElementById("bleach-stage");
+    if (!tooltip || !stage) return;
+
+    const originalDate = new Date(d.date);
+    const dateStr = d3.timeFormat("%b %d, %Y")(originalDate);
+
+    tooltip.innerHTML = `
+        <span class="bleach-tooltip__date">${dateStr}</span>
+        <span class="bleach-tooltip__temp">${d.tempC.toFixed(2)}°C</span>
+    `;
+    tooltip.classList.add("is-visible");
+
+    const stageRect = stage.getBoundingClientRect();
+    tooltip.style.left = `${event.clientX - stageRect.left + 12}px`;
+    tooltip.style.top = `${event.clientY - stageRect.top - 12}px`;
+}
+
+function handleBleachLeave() {
+    const tooltip = document.getElementById("bleach-tooltip");
+    if (tooltip) tooltip.classList.remove("is-visible");
 }
 
 /* ============================================ */
@@ -325,21 +727,27 @@ function handleReefLeave() {
 /* ---------- Per-step transitions ---------- */
 
 function mapTransitionTo(stepIdx) {
+    const step2Legend = document.getElementById("sst-legend-step2");
+
     if (stepIdx === 0) {
         hideSSTOverlay();
         hideSSTControls();
+        if (step2Legend) step2Legend.classList.remove("is-visible");
         showGlobalView();
     }
     if (stepIdx === 1) {
         hideSSTOverlay();
         hideSSTControls();
+        if (step2Legend) step2Legend.classList.remove("is-visible");
         zoomToGBR();
     }
     if (stepIdx === 2) {
         hideSSTControls();
+        if (step2Legend) step2Legend.classList.add("is-visible");
         showSSTBaseline();
     }
     if (stepIdx === 3) {
+        if (step2Legend) step2Legend.classList.remove("is-visible");
         showSSTBaseline();
         showSSTControls();
         startYearAutoAnimation();
@@ -398,7 +806,7 @@ function zoomToGBR() {
             .duration(600)
             .style("opacity", 0)
             .remove();
-    }, 6000); 
+    }, 6000);
 }
 
 /* ---------- SST data overlay (Step 2) ---------- */
@@ -887,6 +1295,29 @@ function redrawAll() {
     }
 }
 
+/* ============================================ */
+/*  SECTION · CASCADING EFFECTS                  */
+/*  Click-to-flip cards                          */
+/* ============================================ */
+
+function initEffectCards() {
+    const cards = document.querySelectorAll(".card");
+    if (cards.length === 0) return;
+
+    cards.forEach((card) => {
+        card.addEventListener("click", () => {
+            card.classList.toggle("is-flipped");
+        });
+
+        // Keyboard accessibility — Enter or Space to flip
+        card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                card.classList.toggle("is-flipped");
+            }
+        });
+    });
+}
 
 /* ============================================ */
 /*  ENTRY POINT                                  */
@@ -894,9 +1325,14 @@ function redrawAll() {
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Coral story loaded.");
-    loadSSTMetadata().then(() => {
+    Promise.all([
+        loadSSTMetadata(),
+        loadBleachData(),
+    ]).then(() => {
         initMap();
         initScrollytelling();
         initSSTControls();
+        initEffectCards();
+        initBleachToggle();
     });
 });
