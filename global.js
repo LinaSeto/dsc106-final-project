@@ -131,7 +131,7 @@ function initScrollytelling() {
 /* ============================================ */
 
 let bleachState = {
-    data: null,             // loaded from bleaching_8day.json
+    data: null, 
     svg: null,
     width: 0,
     height: 0,
@@ -139,7 +139,7 @@ let bleachState = {
     xScale: null,
     yScale: null,
     initialized: false,
-    activeYears: { "2016": true, "2022": true },  // toggle state for Step 4
+    activeYears: { "2016": true, "2022": true },
 };
 
 async function loadBleachData() {
@@ -296,15 +296,16 @@ function initBleachChart() {
     // The vertical line pointing down from text to peak — raise the start
     annoG.append("line")
         .attr("x1", annoX)
-        .attr("y1", annoY - 40)       // line starts higher up
+        .attr("y1", annoY - 40) 
         .attr("x2", annoX)
-        .attr("y2", annoY - 5);       // ends just above the point
+        .attr("y2", annoY - 5);
 
     // Primary text — starts AT the line (text-anchor: start), positioned to the right
     annoG.append("text")
-        .attr("x", annoX - 15)         // 6px to the right of the line
-        .attr("y", annoY - 60)        // above the line top
+        .attr("x", annoX - 15) 
+        .attr("y", annoY - 60) 
         .attr("text-anchor", "start") // text begins at this x position
+        .style("font-weight", "510") 
         .text("Peak: 30.6°C");
 
     // Secondary text — same anchoring, below the primary
@@ -316,19 +317,20 @@ function initBleachChart() {
         .style("font-family", "var(--f-body)")
         .style("font-style", "normal")
         .style("fill", "var(--c-ink-mute)")
-        .text("six 8-day windows above threshold");
+        .text("five consecutive 8-day windows above threshold");
 
     // 5b. 2022 annotation (Step 3 reveal)
     const anno2022G = root.append("g").attr("class", "bleach-annotation-2022");
 
     // Position: pointing at the early Jan 2022 peak
-    const anno2022X = bleachState.xScale(new Date(2000, 0, 4.8));   // early Jan
-    const anno2022Y = bleachState.yScale(30.6);                    // 2022's early-Jan peak
+    const anno2022X = bleachState.xScale(new Date(2000, 0, 4.8)); // early Jan
+    const anno2022Y = bleachState.yScale(30.6); // 2022's early-Jan peak
 
     anno2022G.append("text")
         .attr("x", anno2022X + 6)
         .attr("y", anno2022Y - 60)
         .attr("text-anchor", "start")
+        .style("font-weight", "510") 
         .text("And again in 2022");
 
     anno2022G.append("text")
@@ -399,7 +401,7 @@ function bleachTransitionTo(stepIdx) {
         svg.selectAll(".bleach-threshold-line").classed("is-visible", true);
         svg.selectAll(".bleach-threshold-label").classed("is-visible", true);
         svg.selectAll(".bleach-danger-zone").classed("is-visible", true);
-        svg.selectAll(".bleach-annotation").classed("is-visible", false);  // hide 2016-specific annotation
+        svg.selectAll(".bleach-annotation").classed("is-visible", false); // hide 2016-specific annotation
         svg.selectAll(".bleach-annotation-2022").classed("is-visible", true);
         highlightAboveThreshold();
     }

@@ -420,8 +420,19 @@ em {
 }
 
 .step strong {
-  color: var(--c-coral);
+  color: #e54a2e;
   font-weight: 600;
+}
+
+.interaction-hint {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.92rem;
+  color: white;
+  /* opacity: 0.65; */
+  letter-spacing: 0.02em;
+  margin-top: var(--s-2);
+  display: block;
 }
 
 /* Mobile: stack columns */
@@ -1487,4 +1498,9 @@ em {
 
 #bleaching {
   background: #a8d4dd;
+}
+
+.interaction-hint--pale-bg {
+  color: var(--c-hint-deep);
+  opacity: 0.85;
 }
