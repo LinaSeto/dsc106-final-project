@@ -574,13 +574,13 @@
       "lon": 73.2,
       "size": 6,
       "bbox": {
-        "lon_min": 72,
-        "lon_max": 74,
+        "lon_min": 71,
+        "lon_max": 75.5,
         "lat_min": -1,
-        "lat_max": 7.5
+        "lat_max": 8
       },
       "baseline_period": "2003-2007",
-      "baseline_mean_sst": 29.46,
+      "baseline_mean_sst": 29.44,
       "years": [
         2003,
         2004,
@@ -605,103 +605,103 @@
       ],
       "yearly": {
         "2003": {
-          "mean_sst": 29.62,
-          "mean_anomaly": 0.16,
+          "mean_sst": 29.61,
+          "mean_anomaly": 0.17,
           "files_used": 12
         },
         "2004": {
-          "mean_sst": 29.48,
-          "mean_anomaly": 0.01,
+          "mean_sst": 29.44,
+          "mean_anomaly": -0.0,
           "files_used": 12
         },
         "2005": {
-          "mean_sst": 29.35,
+          "mean_sst": 29.33,
           "mean_anomaly": -0.11,
           "files_used": 12
         },
         "2006": {
-          "mean_sst": 29.36,
-          "mean_anomaly": -0.1,
+          "mean_sst": 29.34,
+          "mean_anomaly": -0.09,
           "files_used": 12
         },
         "2007": {
-          "mean_sst": 29.51,
-          "mean_anomaly": 0.05,
+          "mean_sst": 29.47,
+          "mean_anomaly": 0.03,
           "files_used": 12
         },
         "2008": {
-          "mean_sst": 29.38,
+          "mean_sst": 29.36,
           "mean_anomaly": -0.08,
           "files_used": 12
         },
         "2009": {
-          "mean_sst": 29.61,
-          "mean_anomaly": 0.14,
+          "mean_sst": 29.59,
+          "mean_anomaly": 0.15,
           "files_used": 12
         },
         "2010": {
-          "mean_sst": 29.51,
+          "mean_sst": 29.49,
           "mean_anomaly": 0.05,
           "files_used": 12
         },
         "2011": {
-          "mean_sst": 29.43,
-          "mean_anomaly": -0.04,
+          "mean_sst": 29.41,
+          "mean_anomaly": -0.02,
           "files_used": 12
         },
         "2012": {
-          "mean_sst": 29.67,
-          "mean_anomaly": 0.2,
+          "mean_sst": 29.66,
+          "mean_anomaly": 0.22,
           "files_used": 12
         },
         "2013": {
-          "mean_sst": 29.36,
-          "mean_anomaly": -0.11,
+          "mean_sst": 29.34,
+          "mean_anomaly": -0.09,
           "files_used": 12
         },
         "2014": {
-          "mean_sst": 29.49,
+          "mean_sst": 29.47,
           "mean_anomaly": 0.03,
           "files_used": 12
         },
         "2015": {
-          "mean_sst": 29.95,
-          "mean_anomaly": 0.49,
+          "mean_sst": 29.94,
+          "mean_anomaly": 0.5,
           "files_used": 12
         },
         "2016": {
           "mean_sst": 29.79,
-          "mean_anomaly": 0.33,
+          "mean_anomaly": 0.35,
           "files_used": 12
         },
         "2017": {
           "mean_sst": 29.65,
-          "mean_anomaly": 0.19,
+          "mean_anomaly": 0.21,
           "files_used": 12
         },
         "2018": {
-          "mean_sst": 29.76,
-          "mean_anomaly": 0.3,
+          "mean_sst": 29.75,
+          "mean_anomaly": 0.31,
           "files_used": 12
         },
         "2019": {
-          "mean_sst": 29.86,
-          "mean_anomaly": 0.4,
+          "mean_sst": 29.85,
+          "mean_anomaly": 0.41,
           "files_used": 12
         },
         "2020": {
-          "mean_sst": 29.96,
-          "mean_anomaly": 0.49,
+          "mean_sst": 29.94,
+          "mean_anomaly": 0.5,
           "files_used": 12
         },
         "2021": {
           "mean_sst": 29.6,
-          "mean_anomaly": 0.14,
+          "mean_anomaly": 0.16,
           "files_used": 12
         },
         "2022": {
-          "mean_sst": 29.4,
-          "mean_anomaly": -0.06,
+          "mean_sst": 29.39,
+          "mean_anomaly": -0.05,
           "files_used": 12
         }
       },
@@ -1139,12 +1139,12 @@
       "size": 6,
       "bbox": {
         "lon_min": 176,
-        "lon_max": -178,
+        "lon_max": 180,
         "lat_min": -22,
         "lat_max": -12
       },
       "baseline_period": "2003-2007",
-      "baseline_mean_sst": 27.7,
+      "baseline_mean_sst": 27.71,
       "years": [
         2003,
         2004,
@@ -1169,73 +1169,73 @@
       ],
       "yearly": {
         "2003": {
-          "mean_sst": 27.45,
-          "mean_anomaly": -0.24,
+          "mean_sst": 27.49,
+          "mean_anomaly": -0.22,
           "files_used": 12
         },
         "2004": {
-          "mean_sst": 27.53,
-          "mean_anomaly": -0.17,
+          "mean_sst": 27.51,
+          "mean_anomaly": -0.2,
           "files_used": 12
         },
         "2005": {
+          "mean_sst": 27.84,
+          "mean_anomaly": 0.13,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 27.7,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 28.01,
+          "mean_anomaly": 0.3,
+          "files_used": 12
+        },
+        "2008": {
           "mean_sst": 27.81,
           "mean_anomaly": 0.11,
           "files_used": 12
         },
-        "2006": {
-          "mean_sst": 27.72,
-          "mean_anomaly": 0.02,
-          "files_used": 12
-        },
-        "2007": {
-          "mean_sst": 27.98,
-          "mean_anomaly": 0.28,
-          "files_used": 12
-        },
-        "2008": {
-          "mean_sst": 27.79,
-          "mean_anomaly": 0.09,
-          "files_used": 12
-        },
         "2009": {
           "mean_sst": 27.43,
-          "mean_anomaly": -0.27,
+          "mean_anomaly": -0.28,
           "files_used": 12
         },
         "2010": {
-          "mean_sst": 27.75,
+          "mean_sst": 27.76,
           "mean_anomaly": 0.06,
           "files_used": 12
         },
         "2011": {
-          "mean_sst": 27.93,
-          "mean_anomaly": 0.24,
+          "mean_sst": 27.94,
+          "mean_anomaly": 0.23,
           "files_used": 12
         },
         "2012": {
-          "mean_sst": 27.54,
-          "mean_anomaly": -0.16,
+          "mean_sst": 27.56,
+          "mean_anomaly": -0.15,
           "files_used": 12
         },
         "2013": {
-          "mean_sst": 27.91,
-          "mean_anomaly": 0.21,
+          "mean_sst": 27.93,
+          "mean_anomaly": 0.22,
           "files_used": 12
         },
         "2014": {
-          "mean_sst": 27.54,
+          "mean_sst": 27.55,
           "mean_anomaly": -0.16,
           "files_used": 12
         },
         "2015": {
-          "mean_sst": 27.2,
-          "mean_anomaly": -0.5,
+          "mean_sst": 27.22,
+          "mean_anomaly": -0.49,
           "files_used": 12
         },
         "2016": {
-          "mean_sst": 27.75,
-          "mean_anomaly": 0.05,
+          "mean_sst": 27.74,
+          "mean_anomaly": 0.03,
           "files_used": 12
         },
         "2017": {
@@ -1244,28 +1244,28 @@
           "files_used": 12
         },
         "2018": {
-          "mean_sst": 27.77,
-          "mean_anomaly": 0.07,
+          "mean_sst": 27.76,
+          "mean_anomaly": 0.06,
           "files_used": 12
         },
         "2019": {
-          "mean_sst": 27.92,
-          "mean_anomaly": 0.22,
+          "mean_sst": 27.96,
+          "mean_anomaly": 0.25,
           "files_used": 12
         },
         "2020": {
-          "mean_sst": 27.99,
-          "mean_anomaly": 0.29,
+          "mean_sst": 28.01,
+          "mean_anomaly": 0.3,
           "files_used": 12
         },
         "2021": {
-          "mean_sst": 27.88,
-          "mean_anomaly": 0.18,
+          "mean_sst": 27.87,
+          "mean_anomaly": 0.16,
           "files_used": 12
         },
         "2022": {
-          "mean_sst": 28.2,
-          "mean_anomaly": 0.51,
+          "mean_sst": 28.26,
+          "mean_anomaly": 0.56,
           "files_used": 12
         }
       },

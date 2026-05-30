@@ -2014,6 +2014,461 @@ function initEffectCards() {
 }
 
 /* ============================================ */
+/*  REEF EXPLORER — final "every reef" section    */
+/* ============================================ */
+
+const REEF_META_URL = "docs/modis_data/reefs_metadata.json"; // >>> adjust to your committed path
+const REEF_WORLD_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json";
+
+const reefState = {
+    svg: null, g: null, projection: null, path: null,
+    width: 0, height: 0,
+    land: null, overlays: null, dots: null, tooltip: null,
+    meta: null, mode: "sst", year: 2022,
+};
+
+async function initReefExplore() {
+    const stage = document.getElementById("reef-map");
+    if (!stage) return;
+
+    wireReefGuesser();
+    wireReefControls();
+
+    stage.textContent = "";
+    const rect = stage.getBoundingClientRect();
+    reefState.width = rect.width;
+    reefState.height = rect.height || 420;
+
+    reefState.svg = d3.select(stage).append("svg")
+        .attr("viewBox", `0 0 ${reefState.width} ${reefState.height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+    reefState.g = reefState.svg.append("g").attr("class", "reef-map-root");
+
+    reefState.projection = d3.geoNaturalEarth1()
+        .scale(reefState.width / 6.2)
+        .translate([reefState.width / 2, reefState.height / 2])
+        .center([0, 10]);
+    reefState.path = d3.geoPath().projection(reefState.projection);
+
+    reefState.overlays = reefState.g.append("g").attr("class", "reef-overlays");
+    reefState.land = reefState.g.append("g").attr("class", "reef-land");
+    reefState.spotlight = reefState.g.append("g").attr("class", "reef-spotlight");
+    reefState.dots = reefState.g.append("g").attr("class", "reef-dots");
+
+    // Ocean rect behind everything — same class as your global map
+    reefState.g.insert("rect", ":first-child")
+        .attr("class", "map-ocean")
+        .attr("width", reefState.width)
+        .attr("height", reefState.height);
+
+    // Graticule — same as global map (keep a reference so we can hide it on zoom)
+    const graticule = d3.geoGraticule().step([20, 20]);
+    reefState.graticule = reefState.g.insert("path", ".reef-land")
+        .datum(graticule())
+        .attr("class", "map-graticule")
+        .attr("d", reefState.path);
+
+    reefState.tooltip = d3.select("body").append("div")
+        .attr("class", "reef-tooltip")
+        .style("position", "fixed")
+        .style("pointer-events", "none")
+        .style("z-index", "9999")
+        .style("opacity", 0);
+
+    // Remember the world view so we can return to it
+    reefState.home = {
+        scale: reefState.projection.scale(),
+        translate: reefState.projection.translate().slice(),
+    };
+
+    // label and back-button
+    const box = d3.select(stage.parentNode);
+    reefState.bar = box.insert("div", "#reef-map").attr("class", "reef-bar");  // no display:none
+    reefState.label   = reefState.bar.append("span").attr("class", "reef-label").text("All reefs - global view");
+    reefState.backBtn = reefState.bar.append("button")
+        .attr("class", "reef-back").attr("type", "button")
+        .text("← Back to world map").style("display", "none").on("click", zoomOutReef);
+
+    try {
+        const [world, meta] = await Promise.all([
+            d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"),  // was 110m  // countries, like your global map
+            d3.json(REEF_META_URL),
+        ]);
+        reefState.meta = meta;
+        reefState.land.append("path")
+            .datum(topojson.feature(world, world.objects.countries))
+            .attr("class", "map-land")     // <-- your existing sand-colored land style
+            .attr("d", reefState.path);
+        drawReefDots();
+        renderReefLayer();
+    } catch (err) {
+        console.error("initReefExplore: load failed", err);
+    }
+}
+
+function drawReefDots() {
+    reefState.dots.selectAll(".reef-dot")
+        .data(reefState.meta.reefs)
+        .join("circle")
+        .attr("class", "reef-dot")
+        .attr("cx", d => reefState.projection([d.lon, d.lat])[0])
+        .attr("cy", d => reefState.projection([d.lon, d.lat])[1])
+        .attr("r", d => d.size)
+        .on("mousemove", showReefTip)
+        .on("mouseleave", hideReefTip)
+        .on("click", (e, d) => zoomToReef(d));
+}
+
+function showReefTip(event, d) {
+    console.log("TIP fired:", d.name, event.clientX, event.clientY);   // remove once confirmed
+    const y = d.yearly && d.yearly[String(reefState.year)];
+    let val = "—";
+    if (y) val = reefState.mode === "sst"
+        ? `${y.mean_sst}°C`
+        : `${y.mean_anomaly >= 0 ? "+" : ""}${y.mean_anomaly}°C`;
+    reefState.tooltip
+        .style("opacity", 1)
+        .html(`<strong>${d.name}</strong><br>${reefState.year} · ${reefState.mode === "sst" ? "SST" : "anomaly"}: ${val}`)
+        .style("left", `${event.clientX + 14}px`)
+        .style("top", `${event.clientY + 14}px`);
+}
+function hideReefTip() { reefState.tooltip.style("opacity", 0); }
+
+function zoomToReef(reef) {
+    const b = reef.bbox;
+
+    // Project the four corners directly — avoids d3-geo's spherical-polygon
+    // winding rule (which was measuring "the whole globe minus the box").
+    const pts = [
+        reefState.projection([b.lon_min, b.lat_min]),
+        reefState.projection([b.lon_max, b.lat_min]),
+        reefState.projection([b.lon_max, b.lat_max]),
+        reefState.projection([b.lon_min, b.lat_max]),
+    ];
+    const xs = pts.map(p => p[0]);
+    const ys = pts.map(p => p[1]);
+    const boxW = Math.max(...xs) - Math.min(...xs);
+    const boxH = Math.max(...ys) - Math.min(...ys);
+    if (!(boxW > 0) || !(boxH > 0)) { console.warn("bad bbox for", reef.name, b); return; }
+
+    const fill = 0.85;
+    const k = Math.min((reefState.width * fill) / boxW, (reefState.height * fill) / boxH);
+
+    // 1) scale up
+    reefState.projection.scale(reefState.projection.scale() * k);
+    // 2) re-center: project the reef centre, then shift translate so it lands at viewport centre
+    const center = [(b.lon_min + b.lon_max) / 2, (b.lat_min + b.lat_max) / 2];
+    const [px, py] = reefState.projection(center);
+    const [tx, ty] = reefState.projection.translate();
+    reefState.projection.translate([tx + (reefState.width / 2 - px), ty + (reefState.height / 2 - py)]);
+
+    reefState.path = d3.geoPath().projection(reefState.projection);  // refresh path
+    redrawReef();
+
+    reefState.graticule.style("display", "none");
+    reefState.label.text(reef.name);
+    reefState.backBtn.style("display", "inline-block");
+    reefState.dots.selectAll(".reef-dot")
+        .style("display", d => d.name === reef.name ? "none" : null);
+
+    reefState.focused = reef;
+    renderReefLayer();
+}
+
+function zoomOutReef() {
+    reefState.projection
+        .scale(reefState.home.scale)
+        .translate(reefState.home.translate);
+    reefState.path = d3.geoPath().projection(reefState.projection);
+
+    redrawReef();
+    reefState.graticule.attr("d", reefState.path).style("display", null);
+    reefState.label.text("All reefs - global view");
+    reefState.backBtn.style("display", "none");
+    reefState.dots.selectAll(".reef-dot").style("display", null);
+    reefState.focused = null;
+    reefState.overlays.selectAll("*").remove();
+    reefState.spotlight.selectAll("*").remove();
+    reefState.pixelData = null;
+    reefState.pixelKey = null; 
+}
+
+function redrawReef() {
+    reefState.land.select("path").attr("d", reefState.path);
+    reefState.dots.selectAll(".reef-dot")
+        .attr("cx", d => reefState.projection([d.lon, d.lat])[0])
+        .attr("cy", d => reefState.projection([d.lon, d.lat])[1]);
+    if (reefState.focused) renderReefLayer();
+}
+
+function renderReefLayer() {
+    if (!reefState.meta) return;
+    reefState.dots.selectAll(".reef-dot").classed("reef-dot--anom", reefState.mode === "anomaly");
+
+    const reef = reefState.focused;
+    if (!reef) {
+        reefState.overlays.selectAll("*").remove();
+        reefState.spotlight.selectAll("*").remove();
+        return;
+    }
+
+    const b = reef.bbox, proj = reefState.projection;
+    const tl = proj([b.lon_min, b.lat_max]);
+    const br = proj([b.lon_max, b.lat_min]);
+    const imgX = tl[0], imgY = tl[1], imgW = br[0] - tl[0], imgH = br[1] - tl[1];
+
+    // Build the path from the slug (no reliance on reef.sst_png)
+    const kind = reefState.mode === "sst" ? "sst" : "anomaly";
+    const href = `docs/modis_data/${kind}_${reef.slug}_${reefState.year}.png`;
+    console.log("overlay href:", href);   // <-- check this in the console, then remove
+
+    // data layer (below land): white no-data backing + the SST/anomaly image
+    reefState.overlays.selectAll("*").remove();
+    reefState.overlays.append("rect")
+        .attr("class", "sst-nodata-bg")
+        .attr("x", imgX).attr("y", imgY).attr("width", imgW).attr("height", imgH)
+        .attr("fill", "white");
+    reefState.overlays.append("image")
+        .attr("class", "sst-image is-visible")
+        .attr("href", href)
+        .attr("x", imgX).attr("y", imgY).attr("width", imgW).attr("height", imgH)
+        .attr("preserveAspectRatio", "none");
+
+    // dim everything OUTSIDE the box — same wash as the GBR spotlight
+    let defs = reefState.svg.select("defs");
+    if (defs.empty()) defs = reefState.svg.append("defs");
+    defs.select("#reef-spotlight-mask").remove();
+    const mask = defs.append("mask").attr("id", "reef-spotlight-mask");
+    mask.append("rect").attr("width", "100%").attr("height", "100%").attr("fill", "white");
+    mask.append("rect").attr("x", imgX).attr("y", imgY).attr("width", imgW).attr("height", imgH).attr("fill", "black");
+    const vb = reefState.svg.attr("viewBox").split(/\s+/).map(Number);
+    reefState.spotlight.selectAll("*").remove();
+    reefState.spotlight.append("rect")
+        .attr("class", "spotlight-overlay is-visible")
+        .attr("x", vb[0]).attr("y", vb[1]).attr("width", vb[2]).attr("height", vb[3])
+        .attr("mask", "url(#reef-spotlight-mask)")
+        .style("pointer-events", "none");
+
+    reefState.overlays.append("rect")
+        .attr("class", "reef-hit")
+        .attr("x", imgX).attr("y", imgY).attr("width", imgW).attr("height", imgH)
+        .attr("fill", "transparent")
+        .style("cursor", "crosshair")
+        .on("mousemove", handleReefPixelHover)
+        .on("mouseleave", hideReefTip);
+
+    loadReefPixelData();   // fetch the values for this reef/mode/year
+}
+
+function updateReefLegend() {
+    const u = unitSymbol();
+    const bar = document.getElementById("reef-legend-bar");
+    const lo  = document.getElementById("reef-legend-min");
+    const hi  = document.getElementById("reef-legend-max");
+    if (!bar || !lo || !hi) return;
+    if (reefState.mode === "sst") {
+        bar.classList.remove("is-anomaly"); bar.classList.add("is-sst");
+        lo.textContent = `${Math.round(convertTemp(22, false))}${u}`;
+        hi.textContent = `${Math.round(convertTemp(32, false))}${u}`;
+    } else {
+        bar.classList.remove("is-sst"); bar.classList.add("is-anomaly");
+        const mag = sstState.unit === "F" ? convertTemp(2.5, true).toFixed(1) : "2.5";
+        lo.textContent = `−${mag}${u}`;
+        hi.textContent = `+${mag}${u}`;
+    }
+}
+
+function wireReefControls() {
+    const yearInput = document.getElementById("reef-year");
+    const yearOut = document.getElementById("reef-year-out");
+    const sstBtn = document.getElementById("reef-mode-sst");
+    const anomBtn = document.getElementById("reef-mode-anom");
+
+    if (yearInput) yearInput.addEventListener("input", () => {
+        reefState.year = +yearInput.value;
+        yearOut.textContent = reefState.year;
+        renderReefLayer();
+    });
+    if (sstBtn) sstBtn.addEventListener("click", () => setReefMode("sst"));
+    if (anomBtn) anomBtn.addEventListener("click", () => setReefMode("anomaly"));
+
+    document.querySelectorAll(".reef-unit button").forEach(btn => {
+        btn.addEventListener("click", () => {
+            sstState.unit = btn.dataset.unit;                 // shared with GBR helpers
+            document.querySelectorAll(".reef-unit button").forEach(b =>
+                b.classList.toggle("is-active", b.dataset.unit === sstState.unit));
+            updateReefLegend();
+        });
+    });
+    updateReefLegend();
+}
+
+function setReefMode(next) {
+    reefState.mode = next;
+    document.getElementById("reef-mode-sst").setAttribute("aria-pressed", String(next === "sst"));
+    document.getElementById("reef-mode-anom").setAttribute("aria-pressed", String(next === "anomaly"));
+    renderReefLayer();
+
+    if (y) {
+        const c = reefState.mode === "sst" ? y.mean_sst : y.mean_anomaly;
+        const v = convertTemp(c, reefState.mode === "anomaly");
+        const sign = (reefState.mode === "anomaly" && v >= 0) ? "+" : "";
+        val = `${sign}${v.toFixed(2)}${unitSymbol()}`;
+    }
+}
+
+async function loadReefPixelData() {
+    const reef = reefState.focused;
+    if (!reef) { reefState.pixelData = null; reefState.pixelKey = null; return; }
+    const kind = reefState.mode === "sst" ? "sst" : "anomaly";
+    const key = `${reef.slug}_${kind}_${reefState.year}`;
+    if (reefState.pixelKey === key) return;            // already loaded
+    const path = `docs/modis_data/${kind}_${reef.slug}_${reefState.year}.json`;
+    try {
+        reefState.pixelData = await d3.json(path);
+        reefState.pixelKey = key;
+    } catch (err) {
+        console.warn("Reef pixel data not found:", path);
+        reefState.pixelData = null;
+        reefState.pixelKey = null;
+    }
+}
+
+function getReefPixelValue(event) {
+    if (!reefState.pixelData || !reefState.focused) return null;
+    const svg = reefState.svg.node();
+    const pt = svg.createSVGPoint();
+    pt.x = event.clientX; pt.y = event.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const [lon, lat] = reefState.projection.invert([p.x, p.y]);
+
+    const b = reefState.focused.bbox;
+    if (lon < b.lon_min || lon > b.lon_max || lat < b.lat_min || lat > b.lat_max) return null;
+
+    const [nLat, nLon] = reefState.pixelData.shape;
+    const latFrac = (b.lat_max - lat) / (b.lat_max - b.lat_min);  // lat runs high→low
+    const lonFrac = (lon - b.lon_min) / (b.lon_max - b.lon_min);
+    const latIdx = Math.floor(latFrac * nLat);
+    const lonIdx = Math.floor(lonFrac * nLon);
+    if (latIdx < 0 || latIdx >= nLat || lonIdx < 0 || lonIdx >= nLon) return null;
+
+    return reefState.pixelData.values[latIdx * nLon + lonIdx];  // null = no-data pixel
+}
+
+function handleReefPixelHover(event) {
+    const reef = reefState.focused;
+    if (!reef) return;
+    const isAnom = reefState.mode !== "sst";
+    const v = getReefPixelValue(event);
+
+    let body;
+    if (v !== null && v !== undefined) {
+        const t = convertTemp(v, isAnom);
+        const sign = isAnom && t >= 0 ? "+" : "";
+        body = `${isAnom ? "Anomaly" : "SST"}: <strong>${sign}${t.toFixed(2)}${unitSymbol()}</strong>`;
+    } else {
+        body = `<span style="opacity:.7">no data here</span>`;   // land / cloud pixel
+    }
+
+    reefState.tooltip
+        .style("opacity", 1)
+        .html(`<strong>${reef.name}</strong> · ${reefState.year}<br>${body}`)
+        .style("left", `${event.clientX + 14}px`)
+        .style("top",  `${event.clientY + 14}px`);
+}
+
+/* ============================================ */
+/*  REEF BLEACHING GUESSER                      */
+/* ============================================ */
+
+function drawCoral(parent, cx, baseY, h, color) {
+    const g = parent.append("g").attr("transform", `translate(${cx},${baseY})`);
+    const branches = [{a:-30,l:0.6},{a:-16,l:0.92},{a:-4,l:1},{a:8,l:0.95},{a:22,l:0.72},{a:34,l:0.55}];
+    const w = Math.max(4, h * 0.14);
+    branches.forEach(b => {
+        const rad = b.a * Math.PI / 180, len = h * b.l;
+        const x2 = Math.sin(rad) * len, y2 = -Math.cos(rad) * len;
+        g.append("line").attr("x1", 0).attr("y1", 0).attr("x2", x2).attr("y2", y2)
+            .attr("stroke", color).attr("stroke-width", w).attr("stroke-linecap", "round");
+        g.append("circle").attr("cx", x2).attr("cy", y2).attr("r", w * 0.7).attr("fill", color);
+    });
+}
+
+function wireReefGuesser() {
+    const ANSWER = 84;                 // % of world reefs hit (ICRI/NOAA, Apr 2025)
+    const W = 600, H = 200, BASE = 165;
+    const CORAL = "#ff7058";           // healthy
+    const BLEACH = "#ffffff";          // bleached skeleton
+
+    const scene = d3.select("#guesser-scene");
+    if (scene.empty()) return;
+    scene.selectAll("*").remove();
+    const svg = scene.append("svg")
+        .attr("viewBox", `0 0 ${W} ${H}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const defs = svg.append("defs");
+    const clipRect = defs.append("clipPath").attr("id", "bleach-clip")
+        .append("rect").attr("x", 0).attr("y", 0).attr("width", 0).attr("height", H);
+
+    // seabed
+    svg.append("line").attr("x1", 0).attr("y1", BASE + 2).attr("x2", W).attr("y2", BASE + 2)
+        .attr("stroke", "#cfe8ef").attr("stroke-width", 3);
+
+    const corals = [
+        {x: 30,  h: 56}, {x: 72,  h: 90}, {x: 112, h: 50},
+        {x: 152, h: 100}, {x: 196, h: 64}, {x: 238, h: 86},
+        {x: 280, h: 52}, {x: 320, h: 96}, {x: 362, h: 68},
+        {x: 404, h: 88}, {x: 444, h: 56}, {x: 486, h: 94},
+        {x: 526, h: 66}, {x: 566, h: 50},
+    ];
+
+    const healthy  = svg.append("g");
+    const bleached = svg.append("g").attr("clip-path", "url(#bleach-clip)");
+    corals.forEach(c => drawCoral(healthy,  c.x, BASE, c.h, CORAL));
+    corals.forEach(c => drawCoral(bleached, c.x, BASE, c.h, BLEACH));
+
+    // divider line marking the bleach front
+    const divider = svg.append("line").attr("y1", 8).attr("y2", BASE + 8)
+        .attr("x1", 0).attr("x2", 0)
+        .attr("stroke", "#04546b").attr("stroke-width", 2).attr("stroke-dasharray", "4 3");
+
+    const slider = document.getElementById("reef-guess");
+    const valOut = document.getElementById("reef-guess-val");
+    const submit = document.getElementById("reef-guess-submit");
+    const reveal = document.getElementById("reef-guess-reveal");
+    const msg    = document.getElementById("reef-guess-msg");
+
+    function setPct(pct) {
+        const x = (pct / 100) * W;
+        clipRect.attr("width", x);
+        divider.attr("x1", x).attr("x2", x);
+        valOut.textContent = Math.round(pct);
+    }
+    setPct(0);
+
+    if (slider) slider.addEventListener("input", () => setPct(+slider.value));
+
+    if (submit) submit.addEventListener("click", () => {
+        const guess = +slider.value;
+        d3.transition().duration(900).ease(d3.easeCubicInOut).tween("ans", () => {
+            const i = d3.interpolateNumber(guess, ANSWER);
+            return t => { const p = i(t); if (slider) slider.value = p; setPct(p); };
+        });
+        const diff = guess - ANSWER;
+        let verdict;
+        if (Math.abs(diff) <= 3)
+            verdict = `Spot on. You guessed ${guess}% — and about <strong>${ANSWER}%</strong> of the world's reefs have been hit by bleaching since 2023.`;
+        else if (diff < 0)
+            verdict = `You guessed ${guess}%. It's even worse: about <strong>${ANSWER}%</strong> of the world's reefs have been hit, making the current global event the most widespread and intense mass bleaching crisis recorded.`;
+        else
+            verdict = `You guessed ${guess}%. It's not quite that high, but still a staggering amount: about <strong>${ANSWER}%</strong> of the world's reefs have been hit.`;
+        msg.innerHTML = verdict;
+        reveal.hidden = false;
+    });
+}
+
+/* ============================================ */
 /*  ENTRY POINT                                  */
 /* ============================================ */
 
@@ -2032,5 +2487,6 @@ document.addEventListener("DOMContentLoaded", () => {
         initEffectCards();
         initBleachToggle();
         initMicroVarControls();
+        initReefExplore();
     });
 });

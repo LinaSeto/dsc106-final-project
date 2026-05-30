@@ -353,6 +353,13 @@ em {
   }
 }
 
+.intro__byline {
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: #b8e8f0;
+}
+
 /* ============================================ */
 /*  SCROLLYTELLING LAYOUT                         */
 /*  Two columns: sticky graphic | scrolling text */
@@ -597,9 +604,15 @@ em {
   z-index: 10;
 }
 
+.reef-tooltip.reef-tooltip--fixed {
+  position: fixed;
+}
+
 .reef-tooltip.is-visible {
   opacity: 1;
 }
+
+
 
 /* ============================================ */
 /*  SECTION 2 · BRUSH ANIMATION                  */
@@ -905,28 +918,31 @@ em {
 }
 
 .sst-unit-toggle {
-    display: inline-flex;
-    background: rgba(255, 255, 255, 0.55);
-    border-radius: 999px;
-    padding: 3px;
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  padding: 3px;
 }
 
-#sst-unit-step2 { margin-left: 12px; }
+#sst-unit-step2 {
+  margin-left: 12px;
+}
 
 .sst-unit-btn {
-    border: none;
-    background: transparent;
-    font-family: var(--f-body);
-    font-size: 12px;
-    padding: 5px 12px;
-    border-radius: 999px;
-    color: var(--c-teal-deep);
-    cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--f-body);
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  color: var(--c-teal-deep);
+  cursor: pointer;
 }
+
 .sst-unit-btn.is-active {
-    background: #fff;
-    font-weight: 600;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  background: #fff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 /* ============================================ */
@@ -1991,4 +2007,381 @@ em {
 .meso-tooltip__temp {
   display: block;
   color: #f3b8a8;
+}
+
+.interaction-hint--note {
+  color: var(--c-ink-dim);
+  /* lighter/grayer than the first hint */
+}
+
+/* ============================================ */
+/*  FINAL — EXPLORE THE REEFS + ACT               */
+/* ============================================ */
+.section--explore {
+  background: var(--c-bg);
+  padding: var(--s-7) var(--s-4);
+}
+
+.explore__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.explore__lead {
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  margin-bottom: var(--s-5);
+  max-width: 18ch;
+}
+
+.explore__row {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+
+.explore__row--map {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+/* map gets more width */
+.explore__row--bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-4);
+  width: 100%;
+}
+
+.explore__row--bottom .explore__box {
+  min-height: 440px;
+}
+
+.explore__box {
+  background: var(--c-bg);
+  border: 1px solid var(--c-teal-pale);
+  border-radius: 16px;
+  padding: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.explore__box h3 {
+  font-size: 1.25rem;
+  margin-bottom: var(--s-1);
+}
+
+.explore__sub {
+  color: var(--c-ink-mute);
+  font-size: 0.95rem;
+  margin-bottom: var(--s-3);
+}
+
+/* map */
+.explore__map {
+  position: relative;
+  flex: 1;
+  min-height: 400px;
+  border-radius: 12px;
+  background: var(--c-bg-alt);
+  border: 1px dashed var(--c-teal-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-ink-dim);
+  overflow: hidden;
+}
+
+.explore__map svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.explore__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.explore__slider {
+  flex: 1;
+  min-width: 160px;
+  accent-color: var(--c-teal);
+}
+
+.explore__year {
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink-mute);
+}
+
+.explore__toggle {
+  display: inline-flex;
+  border: 1px solid var(--c-teal-pale);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.explore__toggle button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  padding: var(--s-1) var(--s-3);
+  color: var(--c-ink-mute);
+}
+
+.explore__toggle button[aria-pressed="true"] {
+  background: var(--c-teal-deep);
+  color: #fff;
+}
+
+/* guesser */
+.explore__readout {
+  font-family: var(--f-display);
+  font-size: 3rem;
+  color: var(--c-teal-deep);
+  margin: var(--s-1) 0 var(--s-2);
+}
+
+.explore__cta {
+  align-self: flex-start;
+  margin-top: var(--s-3);
+  background: var(--c-coral);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: var(--s-1) var(--s-4);
+  font: 500 0.95rem var(--f-body);
+  cursor: pointer;
+}
+
+.explore__cta:hover {
+  background: var(--c-coral-deep, #c43d22);
+}
+
+.explore__reveal {
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--c-teal-pale);
+  color: var(--c-ink-mute);
+  font-size: 0.95rem;
+}
+
+.explore__reveal[hidden] {
+  display: none;
+}
+
+.explore__source {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--c-ink-dim);
+  margin-top: var(--s-1);
+}
+
+/* gallery */
+.explore__gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  /* two equal rows */
+  gap: var(--s-2);
+  flex: 1;
+  /* fill the taller box */
+  min-width: 0;
+}
+
+.explore__shot {
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  background: var(--c-bg-alt);
+  border: 1px dashed var(--c-teal-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-ink-dim);
+  font-size: 0.85rem;
+}
+
+.explore__row--bottom {
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-4);
+}
+
+.explore__box {
+  overflow: hidden;
+}
+
+/* ways to help / policies */
+.explore__actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.explore__actions li {
+  padding: var(--s-2) 0;
+  border-bottom: 1px solid var(--c-teal-pale);
+  font-size: 0.95rem;
+}
+
+.explore__actions li:last-child {
+  border-bottom: 0;
+}
+
+.explore__policy {
+  margin-top: var(--s-3);
+  padding: var(--s-3);
+  border-radius: 12px;
+  background: var(--c-teal-pale);
+  color: var(--c-teal-deep);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* responsive: stack on narrow screens */
+@media (max-width: 820px) {
+
+  .explore__row--map,
+  .explore__row--bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .explore__map {
+    min-height: 300px;
+  }
+}
+
+.reef-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-bottom: var(--s-2);
+  padding: var(--s-2);
+  border: 1px solid var(--c-teal-pale);
+  border-radius: 8px;
+  background: var(--c-bg);
+}
+
+.reef-label {
+  background: var(--c-teal-deep);
+  color: #fff;
+  padding: var(--s-1) var(--s-2);
+  border-radius: 4px;
+  font-family: var(--f-display);
+  font-size: 0.95rem;
+}
+
+.reef-back {
+  background: #fff;
+  color: var(--c-teal-deep);
+  border: 1px solid var(--c-teal-pale);
+  border-radius: 4px;
+  padding: var(--s-1) var(--s-2);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.reef-back:hover {
+  background: var(--c-teal-pale);
+}
+
+.reef-back:hover {
+  background: var(--c-teal-pale);
+}
+
+.reef-unit {
+  display: inline-flex;
+  border: 1px solid var(--c-teal-pale);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.reef-unit button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  color: var(--c-ink-mute);
+  line-height: 1.6;
+}
+
+.reef-unit button.is-active {
+  background: var(--c-teal-pale);
+  color: var(--c-teal-deep);
+  font-weight: 600;
+}
+
+.reef-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  font-size: 0.72rem;
+  color: var(--c-ink-mute);
+}
+
+.reef-legend__bar {
+  width: 120px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.reef-legend__bar.is-sst {
+  background: linear-gradient(90deg, #000004, #781c6d, #ed6925, #fcffa4);
+}
+
+/* inferno */
+.reef-legend__bar.is-anomaly {
+  background: linear-gradient(90deg, #2166ac, #f7f7f7, #b2182b);
+}
+
+/* RdBu_r */
+
+.reef-controls-2 {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+
+.reef-legend {
+  flex: 1;
+  /* legend takes up the whole bottom row */
+}
+
+.reef-legend__bar {
+  flex: 1;
+  /* gradient stretches across the available space */
+}
+
+/* ============================================ */
+/*  REEF BLEACHING GUESSER                      */
+/* ============================================ */
+.guesser-scene {
+  width: 100%;
+  background: linear-gradient(180deg, #eaf6f9 0%, #d8eef4 100%);
+  border-radius: 8px;
+  margin-bottom: var(--s-2);
+  overflow: hidden;
+}
+
+.guesser-scene svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.guesser-readout {
+  font-family: var(--f-display);
+  font-size: 1.4rem;
+  color: var(--c-teal-deep);
+  margin: var(--s-1) 0 var(--s-3);
 }
