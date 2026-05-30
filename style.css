@@ -26,6 +26,16 @@
   --c-anom-neutral: #f0ede0;
   --c-anom-hot: #d63a1f;
 
+  /* Variability Accent*/
+  --c-amber: #d99a3c;
+  --c-amber-deep: #b87a1e;
+  --c-amber-pale: rgba(217, 154, 60, 0.18);
+  --c-bleach-bg: #a8d4dd;
+  /* the teal you already have */
+  --c-micro-bg: #82c0ce;
+  /* one shade deeper — begins the descent */
+  --c-deep-blue: #0c3a52;
+
   /* Type */
   --f-display: "Fraunces", Georgia, serif;
   --f-body: "Inter", -apple-system, system-ui, sans-serif;
@@ -894,6 +904,31 @@ em {
   opacity: 1;
 }
 
+.sst-unit-toggle {
+    display: inline-flex;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 999px;
+    padding: 3px;
+}
+
+#sst-unit-step2 { margin-left: 12px; }
+
+.sst-unit-btn {
+    border: none;
+    background: transparent;
+    font-family: var(--f-body);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    color: var(--c-teal-deep);
+    cursor: pointer;
+}
+.sst-unit-btn.is-active {
+    background: #fff;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
 /* ============================================ */
 /*  SECTION · CASCADING EFFECTS                  */
 /* ============================================ */
@@ -1368,7 +1403,7 @@ em {
   fill: var(--c-coral);
   font-family: var(--f-display);
   font-style: italic;
-  font-size: 13px;
+  font-size: 14px;
   font-variation-settings: "opsz" 144;
 }
 
@@ -1486,7 +1521,7 @@ em {
   /* matches 2022 color */
   font-family: var(--f-display);
   font-style: italic;
-  font-size: 13px;
+  font-size: 14px;
   font-variation-settings: "opsz" 144;
 }
 
@@ -1503,4 +1538,457 @@ em {
 .interaction-hint--pale-bg {
   color: var(--c-hint-deep);
   opacity: 0.85;
+}
+
+.bleach-caption {
+  fill: var(--c-teal-deep);
+  font-family: var(--f-body);
+  font-size: 14px;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* ============================================ */
+/*  INTERSTITIAL TRANSITION BLOCKS                */
+/* ============================================ */
+.interstitial {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-7) var(--s-4);
+  text-align: center;
+  background-color: #a8d4dd;
+}
+
+.interstitial__inner {
+  max-width: 680px;
+}
+
+.interstitial__lead {
+  font-family: var(--f-display);
+  font-variation-settings: "opsz" 144;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.3;
+  color: var(--c-teal-deep);
+  margin-bottom: var(--s-3);
+}
+
+.interstitial__sub {
+  font-family: var(--f-body);
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  line-height: 1.7;
+  color: var(--c-ink-mute);
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* the new variability hue, introduced here for the first time */
+.interstitial--microvar em,
+.interstitial--microvar strong {
+  color: var(--c-amber-deep);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ============================================ */
+/*  MICRO-VARIATIONS SECTION                      */
+/* ============================================ */
+.scrolly--microvar {
+  background: var(--c-micro-bg);
+}
+
+.scrolly--microvar .step strong {
+  color: var(--c-amber-deep);
+  font-weight: 600;
+}
+
+.microvar-stage {
+  width: 100%;
+  height: 100%;
+}
+
+/* the interstitial bridges the two: teal at top → deeper teal at bottom */
+.interstitial--microvar {
+  background: linear-gradient(180deg,
+      var(--c-bleach-bg) 0%,
+      var(--c-micro-bg) 100%);
+}
+
+/* ============================================ */
+/*  MICRO-VARIATIONS CHART                        */
+/* ============================================ */
+.mv-axis text {
+  font-family: var(--f-body);
+  font-size: 11px;
+  fill: var(--c-ink-mute);
+}
+
+.mv-axis path,
+.mv-axis line {
+  stroke: rgba(255, 255, 255, 0.45);
+}
+
+.mv-raw-line {
+  fill: none;
+  stroke: var(--c-teal-deep);
+  stroke-width: 2px;
+}
+
+.mv-raw-point {
+  fill: var(--c-teal-deep);
+}
+
+.mv-mean {
+  stroke: var(--c-ink-mute);
+  stroke-width: 1.5px;
+  stroke-dasharray: 2 3;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.mv-mean.is-visible {
+  opacity: 0.8;
+}
+
+/* safe / threshold band — amber */
+.mv-thresh {
+  stroke: var(--c-amber-deep);
+  stroke-width: 2px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.mv-thresh.is-visible {
+  opacity: 1;
+}
+
+.mv-thresh-label,
+.mv-true-label {
+  font-family: var(--f-body);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.mv-thresh-label {
+  fill: var(--c-amber-deep);
+}
+
+.mv-true-label {
+  fill: var(--c-coral-deep);
+}
+
+.mv-thresh-label.is-visible,
+.mv-true-label.is-visible {
+  opacity: 1;
+}
+
+/* 2020 true-spread band — coral, the bleaching-danger callback */
+.mv-true {
+  stroke: var(--c-coral-deep, #c43d22);
+  stroke-width: 2.5px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.mv-true.is-visible {
+  opacity: 1;
+}
+
+.mv-true-label {
+  fill: var(--c-coral-deep, #c43d22);
+}
+
+/* shaded overshoot — variation beyond the safe margin */
+.mv-excess {
+  fill: var(--c-amber);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.mv-excess.is-visible {
+  opacity: 0.2;
+}
+
+.microvar-stage {
+  position: relative;
+}
+
+.mv-raw-point {
+  fill: var(--c-teal-deep);
+  cursor: crosshair;
+}
+
+.mv-axis-label {
+  font-family: var(--f-body);
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--c-teal-deep);
+}
+
+.mv-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--c-teal-deep);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: var(--f-body);
+  font-size: 12px;
+  line-height: 1.3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.mv-tooltip.is-visible {
+  opacity: 1;
+}
+
+.mv-tooltip__date {
+  display: block;
+  font-weight: 600;
+}
+
+.mv-tooltip__temp {
+  display: block;
+  color: var(--c-coral-deep);
+}
+
+.microvar-controls {
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.microvar-controls.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.microvar-toggle {
+  align-self: flex-start;
+  display: inline-flex;
+  background: rgba(4, 84, 107, 0.08);
+  border-radius: 999px;
+  padding: 3px;
+}
+
+.microvar-toggle__btn.is-active {
+  background: #fff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.microvar-toggle__btn {
+  border: none;
+  background: transparent;
+  font-family: var(--f-body);
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: var(--c-teal-deep);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.microvar-slider {
+  width: 100%;
+  accent-color: var(--c-coral-deep, #c43d22);
+  cursor: pointer;
+}
+
+.microvar-window-label {
+  font-family: var(--f-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-teal-deep);
+}
+
+/* ============================================ */
+/*  INTERSTITIAL TRANSITION BLOCKS 2              */
+/* ============================================ */
+.interstitial--meso {
+  background: linear-gradient(180deg,
+      var(--c-micro-bg) 0%,
+      var(--c-deep-blue) 100%);
+}
+
+.interstitial--meso .interstitial__lead {
+  color: #f0f6f8;
+}
+
+.interstitial--meso .interstitial__sub {
+  color: #c4d6dd;
+}
+
+/* the deep section — dark blue, light text */
+.scrolly--meso {
+  background: var(--c-deep-blue);
+}
+
+.scrolly--meso .step__title {
+  color: #f0f6f8;
+}
+
+.scrolly--meso .step p {
+  color: #c4d6dd;
+}
+
+.scrolly--meso .step strong {
+  color: var(--c-coral, #e8593a);
+}
+
+.meso-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.meso-stage svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================ */
+/*  MESOPHOTIC CHART                              */
+/* ============================================ */
+.meso-axis path,
+.meso-axis line {
+  stroke: rgba(255, 255, 255, 0.3);
+}
+
+.meso-axis text {
+  fill: #cfe0e6;
+  font-family: var(--f-body);
+  font-size: 12px;
+}
+
+.meso-axis-label {
+  fill: #e8f1f4;
+  font-family: var(--f-body);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.meso-line {
+  fill: none;
+  stroke: #bfe9f0;
+  stroke-width: 2.5px;
+}
+
+.meso-line--projected {
+  stroke-dasharray: 5 4;
+  opacity: 0.85;
+}
+
+.meso-threshold-line {
+  stroke: var(--c-coral, #e8593a);
+  stroke-width: 2px;
+  stroke-dasharray: 4 3;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.meso-threshold-line.is-visible {
+  opacity: 1;
+}
+
+.meso-threshold-label {
+  fill: var(--c-coral, #e8593a);
+  font-family: var(--f-body);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.meso-threshold-label.is-visible {
+  opacity: 1;
+}
+
+.meso-danger {
+  fill: var(--c-coral, #e8593a);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.meso-danger.is-visible {
+  opacity: 0.16;
+}
+
+.meso-crossing {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.meso-crossing.is-visible {
+  opacity: 1;
+}
+
+.meso-crossing-guide {
+  stroke: var(--c-coral, #e8593a);
+  stroke-width: 1px;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.meso-crossing-dot {
+  fill: var(--c-coral, #e8593a);
+}
+
+.meso-crossing-label {
+  fill: var(--c-coral, #e8593a);
+  font-family: var(--f-body);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.meso-focus-dot {
+  fill: #fff;
+  stroke: var(--c-coral, #e8593a);
+  stroke-width: 2px;
+}
+
+.meso-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(8, 40, 60, 0.92);
+  color: #eaf4f7;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: var(--f-body);
+  font-size: 12px;
+  line-height: 1.3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.15s ease, left 0.08s linear, top 0.08s linear;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.meso-tooltip.is-visible {
+  opacity: 1;
+}
+
+.meso-tooltip__year {
+  display: block;
+  font-weight: 600;
+}
+
+.meso-tooltip__temp {
+  display: block;
+  color: #f3b8a8;
 }

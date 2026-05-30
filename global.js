@@ -55,6 +55,7 @@ let sstState = {
     metadata: null,
     currentYear: 2003,
     mode: "sst",
+    unit: "C",
     imageLoaded: false,
     autoAnimationId: null,
     autoAnimationDone: false,
@@ -71,6 +72,16 @@ async function loadSSTMetadata() {
         console.error("Failed to load SST metadata:", err);
         console.error("Tried URL:", new URL("docs/modis_data/sst_metadata.json", window.location.href).href);
     }
+}
+
+function convertTemp(celsius, isAnomaly) {
+    if (sstState.unit === "F") {
+        return isAnomaly ? celsius * 9 / 5 : celsius * 9 / 5 + 32; // anomaly = difference, no offset
+    }
+    return celsius;
+}
+function unitSymbol() {
+    return sstState.unit === "F" ? "°F" : "°C";
 }
 
 /* ============================================ */
@@ -120,9 +131,39 @@ function initScrollytelling() {
             response.element.classList.remove("is-active");
         });
 
+    // ===== Section · micro temperature variations =====
+    const microvarScroller = scrollama();
+    microvarScroller
+        .setup({
+            step: "#microvar .step",
+            offset: 0.5,
+        })
+        .onStepEnter((response) => {
+            response.element.classList.add("is-active");
+            const stepIdx = +response.element.dataset.step;
+            microvarTransitionTo(stepIdx);
+        })
+        .onStepExit((response) => {
+            response.element.classList.remove("is-active");
+        });
+
+    // ===== Section · deep mesophotic reefs =====
+    const mesoScroller = scrollama();
+    mesoScroller
+        .setup({ step: "#mesophotic .step", offset: 0.5 })
+        .onStepEnter((response) => {
+            response.element.classList.add("is-active");
+            mesoTransitionTo(+response.element.dataset.step);
+        })
+        .onStepExit((response) => {
+            response.element.classList.remove("is-active");
+        });
+
     window.addEventListener("resize", () => {
         baselineScroller.resize();
         bleachScroller.resize();
+        microvarScroller.resize();
+        mesoScroller.resize();
     });
 }
 
@@ -131,7 +172,7 @@ function initScrollytelling() {
 /* ============================================ */
 
 let bleachState = {
-    data: null, 
+    data: null,
     svg: null,
     width: 0,
     height: 0,
@@ -296,16 +337,16 @@ function initBleachChart() {
     // The vertical line pointing down from text to peak — raise the start
     annoG.append("line")
         .attr("x1", annoX)
-        .attr("y1", annoY - 40) 
+        .attr("y1", annoY - 40)
         .attr("x2", annoX)
         .attr("y2", annoY - 5);
 
     // Primary text — starts AT the line (text-anchor: start), positioned to the right
     annoG.append("text")
-        .attr("x", annoX - 15) 
-        .attr("y", annoY - 60) 
+        .attr("x", annoX - 15)
+        .attr("y", annoY - 60)
         .attr("text-anchor", "start") // text begins at this x position
-        .style("font-weight", "510") 
+        .style("font-weight", "510")
         .text("Peak: 30.6°C");
 
     // Secondary text — same anchoring, below the primary
@@ -313,7 +354,7 @@ function initBleachChart() {
         .attr("x", annoX - 15)
         .attr("y", annoY - 45)
         .attr("text-anchor", "start")
-        .style("font-size", "11px")
+        .style("font-size", "13px")
         .style("font-family", "var(--f-body)")
         .style("font-style", "normal")
         .style("fill", "var(--c-ink-mute)")
@@ -330,14 +371,14 @@ function initBleachChart() {
         .attr("x", anno2022X + 6)
         .attr("y", anno2022Y - 60)
         .attr("text-anchor", "start")
-        .style("font-weight", "510") 
+        .style("font-weight", "510")
         .text("And again in 2022");
 
     anno2022G.append("text")
         .attr("x", anno2022X + 6)
         .attr("y", anno2022Y - 45)
         .attr("text-anchor", "start")
-        .style("font-size", "11px")
+        .style("font-size", "13px")
         .style("font-family", "var(--f-body)")
         .style("font-style", "normal")
         .style("fill", "var(--c-ink-mute)")
@@ -349,6 +390,14 @@ function initBleachChart() {
             .attr("class", "bleach-tooltip")
             .attr("id", "bleach-tooltip");
     }
+
+    // Caption — what each point represents
+    root.append("text")
+        .attr("class", "bleach-caption")
+        .attr("x", 7)
+        .attr("y", innerH - 15)
+        .attr("text-anchor", "start")
+        .text("*Each point is the 8-day average sea surface temperature");
 
     bleachState.initialized = true;
 }
@@ -502,6 +551,570 @@ function handleBleachLeave() {
     const tooltip = document.getElementById("bleach-tooltip");
     if (tooltip) tooltip.classList.remove("is-visible");
 }
+
+/* ============================================ */
+/*  SECTION · MICRO TEMPERATURE VARIATIONS       */
+/* ============================================ */
+let microvarState = {
+    data: null,
+    series: null,
+    svg: null,
+    root: null,
+    width: 0,
+    height: 0,
+    margin: { top: 32, right: 40, bottom: 68, left: 84 },
+    xScale: null,
+    yScale: null,
+    xAxisG: null,
+    innerW: 0,
+    innerH: 0,
+    windowStart: 0,
+    windowDays: 14,
+    view: "bands",
+    initialized: false,
+};
+
+async function loadMicroVarData() {
+    try {
+        microvarState.data = await d3.json("docs/modis_data/microvar_2020.json");
+        const parse = d3.timeParse("%Y-%m-%d %H:%M:%S");
+        const { date, sst } = microvarState.data.data;
+        microvarState.series = date.map((d, i) => ({
+            date: parse(d),
+            sst: sst[i],
+            idx: i,
+        }));
+        console.log("Micro-variation data loaded:", microvarState.series.length, "days");
+    } catch (err) {
+        console.error("Failed to load micro-variation data:", err);
+    }
+}
+
+function initMicroVarChart() {
+    if (!microvarState.data) { console.warn("Micro-variation data not loaded yet"); return; }
+    if (microvarState.initialized) return;
+    const stage = document.getElementById("microvar-stage");
+    if (!stage) return;
+
+    const rect = stage.getBoundingClientRect();
+    microvarState.width = rect.width;
+    microvarState.height = rect.height;
+    const { width, height, margin } = microvarState;
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
+    microvarState.innerW = innerW;
+    microvarState.innerH = innerH;
+
+    const { summer_mean, summer_std, std_limits } = microvarState.data;
+
+    microvarState.svg = d3.select(stage).append("svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const root = microvarState.svg.append("g")
+        .attr("class", "microvar-root")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+    microvarState.root = root;
+
+    const ext = d3.extent(microvarState.series, d => d.sst);
+    const yPad = 0.3;
+    const y = d3.scaleLinear()
+        .domain([ext[0] - yPad, ext[1] + yPad])
+        .range([innerH, 0]);
+    microvarState.yScale = y;
+    microvarState.xScale = d3.scaleTime().range([0, innerW]);
+
+    const threshHi = summer_mean + std_limits;
+    const threshLo = summer_mean - std_limits;
+    const trueHi = summer_mean + summer_std;
+    const trueLo = summer_mean - summer_std;
+
+    // 1. Shaded danger zones — everything beyond the safe band, top and bottom
+    root.append("rect").attr("class", "mv-excess mv-excess--top")
+        .attr("x", 0).attr("width", innerW)
+        .attr("y", 0).attr("height", y(threshHi));
+    root.append("rect").attr("class", "mv-excess mv-excess--bottom")
+        .attr("x", 0).attr("width", innerW)
+        .attr("y", y(threshLo)).attr("height", innerH - y(threshLo));
+
+    // 2. True-spread band lines
+    root.append("line").attr("class", "mv-true mv-true--hi")
+        .attr("x1", 0).attr("x2", innerW).attr("y1", y(trueHi)).attr("y2", y(trueHi));
+    root.append("line").attr("class", "mv-true mv-true--lo")
+        .attr("x1", 0).attr("x2", innerW).attr("y1", y(trueLo)).attr("y2", y(trueLo));
+
+    // 3. Safe (threshold) band lines — amber
+    root.append("line").attr("class", "mv-thresh mv-thresh--hi")
+        .attr("x1", 0).attr("x2", innerW).attr("y1", y(threshHi)).attr("y2", y(threshHi));
+    root.append("line").attr("class", "mv-thresh mv-thresh--lo")
+        .attr("x1", 0).attr("x2", innerW).attr("y1", y(threshLo)).attr("y2", y(threshLo));
+
+    // 4. Mean line
+    root.append("line").attr("class", "mv-mean")
+        .attr("x1", 0).attr("x2", innerW).attr("y1", y(summer_mean)).attr("y2", y(summer_mean));
+
+    // Band labels
+    root.append("text").attr("class", "mv-thresh-label")
+        .attr("x", innerW).attr("y", y(threshHi) - 5).attr("text-anchor", "end")
+        .text(`safe variation (±${std_limits.toFixed(2)}°C)`);
+    root.append("text").attr("class", "mv-true-label")
+        .attr("x", innerW).attr("y", y(trueHi) - 5).attr("text-anchor", "end")
+        .text(`2020 variation (±${summer_std.toFixed(2)}°C)`);
+
+    // 5. Raw daily line + points (populated per window)
+    root.append("path").attr("class", "mv-raw-line");
+    root.append("g").attr("class", "mv-raw-points");
+
+    // 6. Axes
+    microvarState.xAxisG = root.append("g")
+        .attr("class", "mv-axis mv-axis--x")
+        .attr("transform", `translate(0,${innerH})`);
+    root.append("g").attr("class", "mv-axis mv-axis--y")
+        .call(d3.axisLeft(y).ticks(5).tickFormat(d => `${d}°`).tickSizeOuter(0));
+
+    // Axis labels
+    root.append("text").attr("class", "mv-axis-label")
+        .attr("text-anchor", "middle")
+        .attr("transform", `translate(${-margin.left + 26},${innerH / 2}) rotate(-90)`)
+        .text("Sea surface temperature (°C)");
+
+    root.append("text").attr("class", "mv-axis-label")
+        .attr("text-anchor", "middle")
+        .attr("x", innerW / 2)
+        .attr("y", innerH + margin.bottom - 18)
+        .text("2020 bleaching season");
+
+    microvarState.initialized = true;
+
+    if (!document.getElementById("mv-tooltip")) {
+        d3.select(stage).append("div").attr("class", "mv-tooltip").attr("id", "mv-tooltip");
+    }
+
+    updateWindow(0, false);
+}
+
+function updateWindow(start, animate) {
+    const { series, windowDays, root } = microvarState;
+    const maxStart = series.length - windowDays;
+    microvarState.windowStart = Math.max(0, Math.min(maxStart, start));
+    const slice = series.slice(microvarState.windowStart, microvarState.windowStart + windowDays);
+
+    const x = microvarState.xScale, y = microvarState.yScale;
+    x.domain([slice[0].date, slice[slice.length - 1].date]);
+
+    const xAxis = d3.axisBottom(x).ticks(d3.timeWeek.every(1))
+        .tickFormat(d3.timeFormat("%b %d")).tickSizeOuter(0);
+    (animate ? microvarState.xAxisG.transition().duration(400) : microvarState.xAxisG).call(xAxis);
+
+    const lineGen = d3.line().x(d => x(d.date)).y(d => y(d.sst)).curve(d3.curveMonotoneX);
+    const lineSel = root.select(".mv-raw-line").datum(slice);
+    (animate ? lineSel.transition().duration(400) : lineSel).attr("d", lineGen);
+
+    const pts = root.select(".mv-raw-points").selectAll("circle").data(slice, d => d.idx);
+    pts.exit().remove();
+    pts.enter().append("circle").attr("class", "mv-raw-point").attr("r", 3.5)
+        .on("mousemove", handleMicroVarHover)
+        .on("mouseleave", handleMicroVarLeave)
+        .merge(pts)
+        .attr("cx", d => x(d.date)).attr("cy", d => y(d.sst));
+}
+
+function handleMicroVarHover(event, d) {
+    const tooltip = document.getElementById("mv-tooltip");
+    const stage = document.getElementById("microvar-stage");
+    if (!tooltip || !stage) return;
+    tooltip.innerHTML = `
+        <span class="mv-tooltip__date">${d3.timeFormat("%b %d, %Y")(d.date)}</span>
+        <span class="mv-tooltip__temp">${d.sst.toFixed(2)}°C</span>
+    `;
+    tooltip.classList.add("is-visible");
+    const stageRect = stage.getBoundingClientRect();
+    tooltip.style.left = `${event.clientX - stageRect.left + 12}px`;
+    tooltip.style.top = `${event.clientY - stageRect.top - 12}px`;
+}
+function handleMicroVarLeave() {
+    const tooltip = document.getElementById("mv-tooltip");
+    if (tooltip) tooltip.classList.remove("is-visible");
+}
+
+function windowStd(slice) {
+    const mean = d3.mean(slice, d => d.sst);
+    return Math.sqrt(d3.mean(slice, d => (d.sst - mean) ** 2));
+}
+
+function currentSlice() {
+    return microvarState.series.slice(
+        microvarState.windowStart,
+        microvarState.windowStart + microvarState.windowDays
+    );
+}
+
+// Per-fortnight band (explore view) — width = this window's spread
+function updateMicroVarBands(animate) {
+    const { root, yScale: y, data } = microvarState;
+    const sd = windowStd(currentSlice());
+    const hi = data.summer_mean + sd, lo = data.summer_mean - sd;
+    const move = (sel, val) => {
+        const s = root.select(sel);
+        (animate ? s.transition().duration(300) : s).attr("y1", y(val)).attr("y2", y(val));
+    };
+    move(".mv-true--hi", hi);
+    move(".mv-true--lo", lo);
+    const lbl = root.select(".mv-true-label");
+    (animate ? lbl.transition().duration(300) : lbl).attr("y", y(hi) - 5);
+    lbl.text(`this 2-week window (±${sd.toFixed(2)}°C)`);
+}
+
+// Season-wide band (narrative steps) — width = whole-season spread
+function setSeasonBands(animate) {
+    const { root, yScale: y, data } = microvarState;
+    const hi = data.summer_mean + data.summer_std, lo = data.summer_mean - data.summer_std;
+    const move = (sel, val) => {
+        const s = root.select(sel);
+        (animate ? s.transition().duration(300) : s).attr("y1", y(val)).attr("y2", y(val));
+    };
+    move(".mv-true--hi", hi);
+    move(".mv-true--lo", lo);
+    const lbl = root.select(".mv-true-label");
+    (animate ? lbl.transition().duration(300) : lbl).attr("y", y(hi) - 5);
+    lbl.text(`2020 variation (±${data.summer_std.toFixed(2)}°C)`);
+}
+
+function setMicroVarView(view) {
+    microvarState.view = view;
+    const svg = microvarState.svg;
+    if (!svg) return;
+    const set = (sel, vis) => svg.selectAll(sel).classed("is-visible", vis);
+    const raw = svg.selectAll(".mv-raw-line, .mv-raw-points");
+    if (view === "raw") {
+        raw.transition().duration(400).style("opacity", 1);
+        svg.selectAll(".mv-raw-points").style("pointer-events", "all");
+        set(".mv-mean", false);
+        set(".mv-thresh, .mv-thresh-label", false);
+        set(".mv-true, .mv-true-label", false);
+        set(".mv-excess", false);
+    } else {
+        raw.transition().duration(400).style("opacity", 0);
+        svg.selectAll(".mv-raw-points").style("pointer-events", "none");
+        set(".mv-mean", true);
+        set(".mv-thresh, .mv-thresh-label", true);
+        set(".mv-true, .mv-true-label", true);
+        set(".mv-excess", true);
+        updateMicroVarBands(true);
+    }
+}
+
+function updateMicroVarWindowLabel() {
+    const lbl = document.getElementById("microvar-window-label");
+    if (!lbl) return;
+    const slice = currentSlice();
+    const fmt = d3.timeFormat("%b %d");
+    lbl.textContent = `${fmt(slice[0].date)} – ${fmt(slice[slice.length - 1].date)}, 2020`;
+}
+
+function initMicroVarControls() {
+    const slider = document.getElementById("microvar-slider");
+    if (slider && microvarState.series) {
+        slider.max = microvarState.series.length - microvarState.windowDays;
+        slider.value = 0;
+        slider.addEventListener("input", (e) => {
+            updateWindow(+e.target.value, false);
+            if (microvarState.view === "bands") updateMicroVarBands(false);
+            updateMicroVarWindowLabel();
+        });
+    }
+    document.querySelectorAll("#microvar-controls .microvar-toggle__btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll("#microvar-controls .microvar-toggle__btn")
+                .forEach(b => b.classList.remove("is-active"));
+            btn.classList.add("is-active");
+            setMicroVarView(btn.dataset.view);
+        });
+    });
+}
+
+function microvarTransitionTo(stepIdx) {
+    if (!microvarState.initialized) initMicroVarChart();
+    if (!microvarState.svg) return;
+    const svg = microvarState.svg;
+    const set = (sel, vis) => svg.selectAll(sel).classed("is-visible", vis);
+    const showRaw = (on) => {
+        svg.selectAll(".mv-raw-line, .mv-raw-points")
+            .transition().duration(600).style("opacity", on ? 1 : 0);
+        svg.selectAll(".mv-raw-points").style("pointer-events", on ? "all" : "none");
+    };
+
+    // STEP 0: raw daily data only
+    if (stepIdx === 0) {
+        updateWindow(0, false);
+        set(".mv-mean", false);
+        set(".mv-thresh, .mv-thresh-label", false);
+        set(".mv-true, .mv-true-label", false);
+        set(".mv-excess", false);
+        showRaw(true);
+        hideMicroVarSlider();
+    }
+
+    // STEP 1: mean + safe band + full danger shading (no coral yet)
+    if (stepIdx === 1) {
+        set(".mv-mean", true);
+        set(".mv-thresh, .mv-thresh-label", true);
+        set(".mv-true, .mv-true-label", false);
+        set(".mv-excess", true);
+        showRaw(false);
+        hideMicroVarSlider();
+    }
+
+    // STEP 2: coral 2020 lines appear at season-wide spread
+    if (stepIdx === 2) {
+        setSeasonBands(false);
+        set(".mv-mean", true);
+        set(".mv-thresh, .mv-thresh-label", true);
+        set(".mv-true, .mv-true-label", true);
+        set(".mv-excess", true);
+        showRaw(false);
+        hideMicroVarSlider();
+    }
+
+    // STEP 3: explore — controls appear, per-fortnight band, toggle live
+    if (stepIdx === 3) {
+        microvarState.windowStart = 0;
+        const slider = document.getElementById("microvar-slider");
+        if (slider) slider.value = 0;
+        updateWindow(0, false);
+        showMicroVarSlider();
+        setMicroVarView(microvarState.view);
+        updateMicroVarWindowLabel();
+    }
+}
+
+// Slider control stubs — harmless until #microvar-controls exists (next chunk)
+function showMicroVarSlider() {
+    const c = document.getElementById("microvar-controls");
+    if (c) c.classList.add("is-visible");
+}
+function hideMicroVarSlider() {
+    const c = document.getElementById("microvar-controls");
+    if (c) c.classList.remove("is-visible");
+}
+
+/* ============================================ */
+/*  SECTION · DEEP MESOPHOTIC REEFS               */
+/* ============================================ */
+let mesoState = {
+    data: null,
+    series: null,
+    svg: null,
+    root: null,
+    width: 0,
+    height: 0,
+    margin: { top: 32, right: 40, bottom: 60, left: 84 },
+    xScale: null,
+    yScale: null,
+    innerW: 0,
+    innerH: 0,
+    initialized: false,
+};
+
+const MESO_SPLIT_YEAR = 2025; // solid up to here, dashed (projected) after
+
+async function loadMesoData() {
+    try {
+        mesoState.data = await d3.json("docs/modis_data/mesophotic_projection.json");
+        const { date, sst } = mesoState.data.data;
+        mesoState.series = date.map((d, i) => ({ year: +d, sst: sst[i] }))
+            .filter(d => d.year <= 2100);
+        console.log("Mesophotic data loaded:", mesoState.series.length, "years");
+    } catch (err) {
+        console.error("Failed to load mesophotic data:", err);
+    }
+}
+
+function initMesoChart() {
+    if (!mesoState.data) { console.warn("Mesophotic data not loaded yet"); return; }
+    if (mesoState.initialized) return;
+    const stage = document.getElementById("meso-stage");
+    if (!stage) return;
+
+    const rect = stage.getBoundingClientRect();
+    mesoState.width = rect.width;
+    mesoState.height = rect.height;
+    const { width, height, margin } = mesoState;
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
+    mesoState.innerW = innerW;
+    mesoState.innerH = innerH;
+
+    const threshold = mesoState.data.threshold;
+    const series = mesoState.series;
+
+    mesoState.svg = d3.select(stage).append("svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+    const root = mesoState.svg.append("g")
+        .attr("class", "meso-root")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+    mesoState.root = root;
+
+    const x = d3.scaleLinear()
+        .domain(d3.extent(series, d => d.year))
+        .range([0, innerW]);
+    const yExt = d3.extent(series, d => d.sst);
+    const y = d3.scaleLinear()
+        .domain([Math.floor(yExt[0]) - 0.5, Math.ceil(yExt[1]) + 0.5])
+        .range([innerH, 0]);
+    mesoState.xScale = x;
+    mesoState.yScale = y;
+
+    // clip path for the left-to-right line reveal
+    mesoState.svg.append("defs")
+        .append("clipPath").attr("id", "meso-reveal")
+        .append("rect").attr("class", "meso-reveal-rect")
+        .attr("x", 0).attr("y", -10)
+        .attr("width", 0).attr("height", innerH + 20);
+
+    // 1. danger zone above threshold (hidden until step 1)
+    root.append("rect").attr("class", "meso-danger")
+        .attr("x", 0).attr("y", 0)
+        .attr("width", innerW).attr("height", y(threshold));
+
+    // 2. axes
+    root.append("g").attr("class", "meso-axis meso-axis--x")
+        .attr("transform", `translate(0,${innerH})`)
+        .call(d3.axisBottom(x).ticks(8).tickFormat(d3.format("d")).tickSizeOuter(0));
+    root.append("g").attr("class", "meso-axis meso-axis--y")
+        .call(d3.axisLeft(y).ticks(6).tickFormat(d => `${d}°`).tickSizeOuter(0));
+
+    root.append("text").attr("class", "meso-axis-label")
+        .attr("text-anchor", "middle")
+        .attr("transform", `translate(${-margin.left + 26},${innerH / 2}) rotate(-90)`)
+        .text("Sea surface temperature (°C)");
+    root.append("text").attr("class", "meso-axis-label")
+        .attr("text-anchor", "middle")
+        .attr("x", innerW / 2).attr("y", innerH + margin.bottom - 18)
+        .text("Year");
+
+    // 3. threshold line + label (hidden until step 1)
+    root.append("line").attr("class", "meso-threshold-line")
+        .attr("x1", 0).attr("x2", innerW)
+        .attr("y1", y(threshold)).attr("y2", y(threshold));
+    root.append("text").attr("class", "meso-threshold-label")
+        .attr("x", 4).attr("y", y(threshold) - 8)
+        .attr("text-anchor", "start")
+        .text(`mesophotic bleaching threshold: ${threshold}°C`);
+
+    // 4. projection line — solid (observed) then dashed (projected), under the reveal clip
+    const lineGen = d3.line().x(d => x(d.year)).y(d => y(d.sst)).curve(d3.curveMonotoneX);
+    const observed = series.filter(d => d.year <= MESO_SPLIT_YEAR);
+    const projected = series.filter(d => d.year >= MESO_SPLIT_YEAR);
+    const linesG = root.append("g").attr("clip-path", "url(#meso-reveal)");
+    linesG.append("path").datum(observed)
+        .attr("class", "meso-line meso-line--observed").attr("d", lineGen);
+    linesG.append("path").datum(projected)
+        .attr("class", "meso-line meso-line--projected").attr("d", lineGen);
+
+    // crossing marker — first year the projection reaches the threshold (revealed at step 2)
+    const crossing = series.find(d => d.sst >= threshold);
+    if (crossing) {
+        const cg = root.append("g").attr("class", "meso-crossing");
+        cg.append("line").attr("class", "meso-crossing-guide")
+            .attr("x1", x(crossing.year)).attr("x2", x(crossing.year))
+            .attr("y1", y(crossing.sst)).attr("y2", y(crossing.sst) - 34);
+        cg.append("circle").attr("class", "meso-crossing-dot")
+            .attr("cx", x(crossing.year)).attr("cy", y(crossing.sst)).attr("r", 5);
+        cg.append("text").attr("class", "meso-crossing-label")
+            .attr("x", x(crossing.year)).attr("y", y(crossing.sst) - 42)
+            .attr("text-anchor", "middle")
+            .text(`~${crossing.year}`);
+    }
+
+    // hover focus + tooltip
+    const focus = root.append("g").attr("class", "meso-focus").style("display", "none");
+    focus.append("circle").attr("class", "meso-focus-dot").attr("r", 4);
+    mesoState.focus = focus;
+    mesoState.bisect = d3.bisector(d => d.year).left;
+
+    if (!document.getElementById("meso-tooltip")) {
+        d3.select(stage).append("div").attr("class", "meso-tooltip").attr("id", "meso-tooltip");
+    }
+
+    root.append("rect").attr("class", "meso-hit")
+        .attr("x", 0).attr("y", 0)
+        .attr("width", innerW).attr("height", innerH)
+        .attr("fill", "transparent")
+        .style("cursor", "crosshair")
+        .on("mousemove", mesoHover)
+        .on("mouseleave", mesoLeave);
+
+    mesoState.initialized = true;
+}
+
+function mesoTransitionTo(stepIdx) {
+    if (!mesoState.initialized) initMesoChart();
+    if (!mesoState.svg) return;
+    const svg = mesoState.svg;
+    const set = (sel, vis) => svg.selectAll(sel).classed("is-visible", vis);
+
+    if (stepIdx === 0) {
+        set(".meso-threshold-line, .meso-threshold-label", false);
+        set(".meso-danger", false);
+        set(".meso-crossing", false);
+        svg.select(".meso-reveal-rect")
+            .interrupt().attr("width", 0)
+            .transition().duration(2200).ease(d3.easeCubicInOut)
+            .attr("width", mesoState.innerW);
+    }
+
+    if (stepIdx === 1) {
+        svg.select(".meso-reveal-rect").interrupt().attr("width", mesoState.innerW);
+        set(".meso-threshold-line, .meso-threshold-label", true);
+        set(".meso-danger", true);
+        set(".meso-crossing", false);
+    }
+
+    if (stepIdx === 2) {
+        svg.select(".meso-reveal-rect").interrupt().attr("width", mesoState.innerW);
+        set(".meso-threshold-line, .meso-threshold-label", true);
+        set(".meso-danger", true);
+        set(".meso-crossing", true);
+    }
+}
+
+function mesoHover(event) {
+    const { xScale: x, yScale: y, series, focus, bisect, root } = mesoState;
+    const stage = document.getElementById("meso-stage");
+    const tooltip = document.getElementById("meso-tooltip");
+    if (!stage || !tooltip) return;
+    const [mx] = d3.pointer(event, root.node());
+    const year = x.invert(mx);
+    const i = bisect(series, year);
+    const d0 = series[Math.max(0, i - 1)];
+    const d1 = series[Math.min(series.length - 1, i)];
+    const d = (!d0 || (d1 && (year - d0.year > d1.year - year))) ? d1 : d0;
+    if (!d) return;
+
+    const dot = focus.style("display", null).select(".meso-focus-dot")
+        .attr("cx", x(d.year)).attr("cy", y(d.sst));
+
+    tooltip.innerHTML = `
+        <span class="meso-tooltip__year">${d.year}</span>
+        <span class="meso-tooltip__temp">${d.sst.toFixed(2)}°C</span>
+    `;
+    tooltip.classList.add("is-visible");
+
+    // anchor to the dot (snaps with the value) instead of the cursor
+    const stageRect = stage.getBoundingClientRect();
+    const dotRect = dot.node().getBoundingClientRect();
+    tooltip.style.left = `${dotRect.left - stageRect.left + dotRect.width / 2 + 12}px`;
+    tooltip.style.top = `${dotRect.top - stageRect.top - 12}px`;
+}
+
+function mesoLeave() {
+    if (mesoState.focus) mesoState.focus.style("display", "none");
+    const tooltip = document.getElementById("meso-tooltip");
+    if (tooltip) tooltip.classList.remove("is-visible");
+}
+
 
 /* ============================================ */
 /*  DIVE OVERLAY · scroll-driven bubble rush     */
@@ -921,47 +1534,90 @@ function hideSSTOverlay() {
     mapState.svg.selectAll(".sst-hit-area").remove();
 }
 
+// function handleSSTHover(event) {
+//     const tooltip = document.getElementById("sst-tooltip");
+//     const stage = document.getElementById("map-stage");
+//     if (!tooltip || !stage) return;
+
+//     const year = sstState.currentYear;
+//     let html = `<span class="sst-tooltip__year">${year}</span>`;
+
+//     // Get the pixel value at the cursor location
+//     const pixelValue = getPixelValueAtCursor(event);
+
+//     if (pixelValue !== null) {
+//         // Have per-pixel data
+//         if (sstState.mode === "sst") {
+//             html += `SST: <span class="sst-tooltip__value">${pixelValue.toFixed(2)}°C</span>`;
+//         } else {
+//             const sign = pixelValue >= 0 ? "+" : "";
+//             html += `Anomaly: <span class="sst-tooltip__value">${sign}${pixelValue.toFixed(2)}°C</span>`;
+//         }
+//     } else {
+//         // Fallback: show the regional mean
+//         if (sstState.mode === "sst") {
+//             const stats = sstState.metadata?.yearly_stats?.[year];
+//             if (stats) {
+//                 html += `Mean SST: <span class="sst-tooltip__value">${stats.mean_sst.toFixed(2)}°C</span>`;
+//             }
+//         } else {
+//             const anom = sstState.metadata?.yearly_anomaly?.[year];
+//             if (anom) {
+//                 const sign = anom.mean_anomaly >= 0 ? "+" : "";
+//                 html += `Mean anomaly: <span class="sst-tooltip__value">${sign}${anom.mean_anomaly.toFixed(2)}°C</span>`;
+//             }
+//         }
+//     }
+
+//     tooltip.innerHTML = html;
+//     tooltip.classList.add("is-visible");
+
+//     const stageRect = stage.getBoundingClientRect();
+//     tooltip.style.left = `${event.clientX - stageRect.left + 12}px`;
+//     tooltip.style.top = `${event.clientY - stageRect.top - 12}px`;
+// }
+
 function handleSSTHover(event) {
     const tooltip = document.getElementById("sst-tooltip");
     const stage = document.getElementById("map-stage");
     if (!tooltip || !stage) return;
 
     const year = sstState.currentYear;
-    let html = `<span class="sst-tooltip__year">${year}</span>`;
-
-    // Get the pixel value at the cursor location
     const pixelValue = getPixelValueAtCursor(event);
+    const isAnomaly = sstState.mode !== "sst";
 
+    let celsius = null, label = "";
     if (pixelValue !== null) {
-        // Have per-pixel data
-        if (sstState.mode === "sst") {
-            html += `SST: <span class="sst-tooltip__value">${pixelValue.toFixed(2)}°C</span>`;
-        } else {
-            const sign = pixelValue >= 0 ? "+" : "";
-            html += `Anomaly: <span class="sst-tooltip__value">${sign}${pixelValue.toFixed(2)}°C</span>`;
-        }
+        celsius = pixelValue;
+        label = isAnomaly ? "Anomaly" : "SST";
+    } else if (!isAnomaly) {
+        const stats = sstState.metadata?.yearly_stats?.[year];
+        if (stats) { celsius = stats.mean_sst; label = "Mean SST"; }
     } else {
-        // Fallback: show the regional mean
-        if (sstState.mode === "sst") {
-            const stats = sstState.metadata?.yearly_stats?.[year];
-            if (stats) {
-                html += `Mean SST: <span class="sst-tooltip__value">${stats.mean_sst.toFixed(2)}°C</span>`;
-            }
-        } else {
-            const anom = sstState.metadata?.yearly_anomaly?.[year];
-            if (anom) {
-                const sign = anom.mean_anomaly >= 0 ? "+" : "";
-                html += `Mean anomaly: <span class="sst-tooltip__value">${sign}${anom.mean_anomaly.toFixed(2)}°C</span>`;
-            }
-        }
+        const anom = sstState.metadata?.yearly_anomaly?.[year];
+        if (anom) { celsius = anom.mean_anomaly; label = "Mean anomaly"; }
     }
 
-    tooltip.innerHTML = html;
-    tooltip.classList.add("is-visible");
+    sstState.lastTooltip = (celsius === null) ? { year } : { year, celsius, isAnomaly, label };
+    renderSSTTooltip();
 
+    tooltip.classList.add("is-visible");
     const stageRect = stage.getBoundingClientRect();
     tooltip.style.left = `${event.clientX - stageRect.left + 12}px`;
     tooltip.style.top = `${event.clientY - stageRect.top - 12}px`;
+}
+
+function renderSSTTooltip() {
+    const tooltip = document.getElementById("sst-tooltip");
+    const t = sstState.lastTooltip;
+    if (!tooltip || !t) return;
+    let html = `<span class="sst-tooltip__year">${t.year}</span>`;
+    if (t.celsius !== undefined) {
+        const val = convertTemp(t.celsius, t.isAnomaly);
+        const sign = t.isAnomaly && val >= 0 ? "+" : "";
+        html += `${t.label}: <span class="sst-tooltip__value">${sign}${val.toFixed(2)}${unitSymbol()}</span>`;
+    }
+    tooltip.innerHTML = html;
 }
 
 function handleSSTLeave() {
@@ -982,6 +1638,23 @@ function updateSSTImage() {
 
     // Load the per-pixel data for tooltip use (async, doesn't block)
     loadPixelData();
+}
+
+function initSSTUnitToggle() {
+    const btns = document.querySelectorAll(".sst-unit-btn");
+    if (!btns.length) return;
+    btns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            sstState.unit = btn.dataset.unit;
+            document.querySelectorAll(".sst-unit-btn").forEach(b =>
+                b.classList.toggle("is-active", b.dataset.unit === sstState.unit));
+            updateLegend();
+
+            // refresh an open tooltip so it flips units immediately
+            const tt = document.getElementById("sst-tooltip");
+            if (tt && tt.classList.contains("is-visible")) renderSSTTooltip();
+        });
+    });
 }
 
 function initSSTControls() {
@@ -1142,21 +1815,32 @@ function getPixelValueAtCursor(event) {
 }
 
 function updateLegend() {
+    const u = unitSymbol();
+    const sstLo = sstState.unit === "F" ? Math.round(convertTemp(22, false)) : 22;
+    const sstHi = sstState.unit === "F" ? Math.round(convertTemp(32, false)) : 32;
+
+    // step-2 legend — always the SST scale
+    const s2min = document.getElementById("sst-legend-step2-min");
+    const s2max = document.getElementById("sst-legend-step2-max");
+    if (s2min) s2min.textContent = `${sstLo}${u}`;
+    if (s2max) s2max.textContent = `${sstHi}${u}`;
+
+    // step-3 legend — SST or anomaly depending on mode
     const bar = document.getElementById("sst-legend-bar");
     const minLabel = document.getElementById("sst-legend-min");
     const maxLabel = document.getElementById("sst-legend-max");
     if (!bar || !minLabel || !maxLabel) return;
-
     if (sstState.mode === "sst") {
         bar.classList.remove("is-anomaly");
         bar.classList.add("is-sst");
-        minLabel.textContent = "22°C";
-        maxLabel.textContent = "32°C";
+        minLabel.textContent = `${sstLo}${u}`;
+        maxLabel.textContent = `${sstHi}${u}`;
     } else {
         bar.classList.remove("is-sst");
         bar.classList.add("is-anomaly");
-        minLabel.textContent = "−2.5°C";
-        maxLabel.textContent = "+2.5°C";
+        const mag = sstState.unit === "F" ? convertTemp(2.5, true).toFixed(1) : "2.5";
+        minLabel.textContent = `−${mag}${u}`;
+        maxLabel.textContent = `+${mag}${u}`;
     }
 }
 
@@ -1330,11 +2014,15 @@ document.addEventListener("DOMContentLoaded", () => {
     Promise.all([
         loadSSTMetadata(),
         loadBleachData(),
+        loadMicroVarData(),
+        loadMesoData(),
     ]).then(() => {
         initMap();
         initScrollytelling();
         initSSTControls();
+        initSSTUnitToggle();
         initEffectCards();
         initBleachToggle();
+        initMicroVarControls();
     });
 });

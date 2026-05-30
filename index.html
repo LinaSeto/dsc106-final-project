@@ -109,7 +109,12 @@
                         <span id="sst-legend-step2-min" class="sst-legend__label">22°C</span>
                         <div id="sst-legend-step2-bar" class="sst-legend__bar is-sst"></div>
                         <span id="sst-legend-step2-max" class="sst-legend__label">32°C</span>
+                        <div id="sst-unit-step2" class="sst-unit-toggle">
+                            <button class="sst-unit-btn is-active" data-unit="C">°C</button>
+                            <button class="sst-unit-btn" data-unit="F">°F</button>
+                        </div>
                     </div>
+
                 </div>
 
                 <div class="step" data-step="3">
@@ -130,6 +135,10 @@
                                 <span class="sst-toggle__label">Show as anomaly</span>
                             </button>
                             <span id="sst-year-display" class="sst-year-display">2003</span>
+                            <div class="sst-unit-toggle">
+                                <button class="sst-unit-btn is-active" data-unit="C">°C</button>
+                                <button class="sst-unit-btn" data-unit="F">°F</button>
+                            </div>
                         </div>
                         <input type="range" id="sst-year-slider" class="sst-year-slider" min="2003" max="2022"
                             value="2003" step="1" />
@@ -164,7 +173,8 @@
                         at Cairns, known
                         as the gateway to the Great Barrier Reef, which sits at the border of the Northern Section in
                         which <strong>99% of reefs</strong> experienced bleaching.
-                        <span class="interaction-hint interaction-hint--pale-bg">Hover over each point to see every 8-day
+                        <span class="interaction-hint interaction-hint--pale-bg">Hover over each point to see every
+                            8-day
                             average sea surface temperature in 2016</span>
                     </p>
                 </div>
@@ -224,6 +234,139 @@
                             2022
                         </button>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- TRANSITION → MICRO TEMPERATURE VARIATIONS      -->
+        <!-- ============================================ -->
+        <section class="interstitial interstitial--microvar">
+            <div class="interstitial__inner">
+                <p class="interstitial__lead">
+                    But coral doesn't only bleach when the water crosses a <em>line</em>.
+                </p>
+                <p class="interstitial__sub">
+                    Sometimes the threat isn't how hot the water gets — it's how sharply the
+                    temperature <strong>swings</strong> from one day to the next.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- SECTION · MICRO TEMPERATURE VARIATIONS         -->
+        <!-- ============================================ -->
+        <section id="microvar" class="scrolly scrolly--microvar">
+            <div class="scrolly__graphic">
+                <div class="graphic-inner">
+                    <div id="microvar-stage" class="microvar-stage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="scrolly__steps">
+                <div class="step" data-step="0">
+                    <h2 class="step__title">The temperature never holds still</h2>
+                    <p>
+                        The same reef, but now day by day instead of week by week — daily sea
+                        surface temperature through the 2020 bleaching season. Even across a
+                        single fortnight, the water never settles. It climbs and dips from one
+                        day to the next.
+                    </p>
+                </div>
+
+                <div class="step" data-step="1">
+                    <h2 class="step__title">Coral lives inside a margin</h2>
+                    <p>
+                        Reefs are adapted not only to an average temperature, but to a familiar
+                        amount of movement around it. Within this band — the mean, give or take
+                        about <strong>half a degree</strong> — the day-to-day swings are
+                        ordinary, and coral copes.
+                    </p>
+                </div>
+
+                <div class="step" data-step="2">
+                    <h2 class="step__title">2020 broke the margin</h2>
+                    <p>
+                        Through the 2020 season, the true spread of daily temperatures ran
+                        <strong>more than twice as wide</strong> as that safe margin. The shaded
+                        zones are swings the reef isn't built to absorb — and much of this
+                        happened on days when the water never crossed the bleaching threshold
+                        from before. The variation alone was enough.
+                    </p>
+                </div>
+
+                <div class="step" data-step="3">
+                    <h2 class="step__title">Move through the season</h2>
+                    <p>
+                        Drag the window to travel across the 2020 bleaching season, fortnight by
+                        fortnight, and watch how restless the water stayed.
+                    </p>
+                    <div id="microvar-controls" class="microvar-controls">
+                        <div class="microvar-toggle">
+                            <button class="microvar-toggle__btn is-active" data-view="bands">Variation</button>
+                            <button class="microvar-toggle__btn" data-view="raw">Daily temperature</button>
+                        </div>
+                        <input type="range" id="microvar-slider" class="microvar-slider" min="0" max="0" value="0"
+                            step="1" />
+                        <div class="microvar-window-label" id="microvar-window-label"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- TRANSITION → DEEP MESOPHOTIC REEFS             -->
+        <!-- ============================================ -->
+        <section class="interstitial interstitial--meso">
+            <div class="interstitial__inner">
+                <p class="interstitial__lead">Let's dive deeper.</p>
+                <p class="interstitial__sub">
+                    Far below the surface, in dim blue light, lie reefs we once believed the
+                    heat could never reach.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- SECTION · DEEP MESOPHOTIC REEFS                -->
+        <!-- ============================================ -->
+        <section id="mesophotic" class="scrolly scrolly--meso">
+            <div class="scrolly__graphic">
+                <div class="graphic-inner">
+                    <div id="meso-stage" class="meso-stage"></div>
+                </div>
+            </div>
+
+            <div class="scrolly__steps">
+                <div class="step" data-step="0">
+                    <h2 class="step__title">The reefs we thought were safe</h2>
+                    <p>
+                        Thirty metres down and deeper, mesophotic reefs live in cooler, dimmer
+                        water. For decades, scientists believed depth made them a
+                        <strong>refuge</strong> — sheltered from the heat bleaching the shallows
+                        above. A place the warming couldn't follow.
+                    </p>
+                </div>
+
+                <div class="step" data-step="1">
+                    <h2 class="step__title">2016 changed the story</h2>
+                    <p>
+                        Then came the worst mass bleaching on record. Surveys found it reaching
+                        past 40 metres — <strong>40% of deep colonies bleached</strong>, some
+                        dead. Cool upwelling gave way to water that was anomalously warm even at
+                        depth. The deep reefs were not spared.
+                    </p>
+                </div>
+
+                <div class="step" data-step="2">
+                    <h2 class="step__title">Nowhere left to hide</h2>
+                    <p>
+                        And the projections offer no reprieve. As temperatures climb toward the
+                        threshold that bleaches even these corals, the shelter of depth runs
+                        out — by late century, the line is crossed and stays crossed. The
+                        damage becomes <strong>widespread, and inescapable</strong>.
+                    </p>
                 </div>
             </div>
         </section>
