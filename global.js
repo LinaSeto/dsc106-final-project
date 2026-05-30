@@ -395,10 +395,18 @@ function initBleachChart() {
     root.append("text")
         .attr("class", "bleach-caption")
         .attr("x", 7)
-        .attr("y", innerH - 15)
+        .attr("y", innerH - 27)
         .attr("text-anchor", "start")
-        .text("*Each point is the 8-day average sea surface temperature");
-
+        .call(t => {
+            t.append("tspan")
+                .attr("x", 7)
+                .attr("dy", "0em")
+                .text("*Each point is the 8-day average");
+            t.append("tspan")
+                .attr("x", 7)
+                .attr("dy", "1.2em")
+                .text("sea surface temperature");
+        });
     bleachState.initialized = true;
 }
 

@@ -1,0 +1,2122 @@
+{
+  "sst_min": 22.0,
+  "sst_max": 32.0,
+  "anomaly_range": 2.5,
+  "reefs": [
+    {
+      "name": "Great Barrier Reef",
+      "slug": "great_barrier_reef",
+      "lat": -18.2,
+      "lon": 147.7,
+      "size": 9,
+      "bbox": {
+        "lon_min": 142,
+        "lon_max": 154,
+        "lat_min": -24.5,
+        "lat_max": -10
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 26.85,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 26.87,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 26.84,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 26.96,
+          "mean_anomaly": 0.11,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 26.7,
+          "mean_anomaly": -0.15,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 26.88,
+          "mean_anomaly": 0.03,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 26.85,
+          "mean_anomaly": 0.0,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 27.22,
+          "mean_anomaly": 0.37,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 27.52,
+          "mean_anomaly": 0.67,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 26.93,
+          "mean_anomaly": 0.08,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 27.0,
+          "mean_anomaly": 0.15,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 27.03,
+          "mean_anomaly": 0.17,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 26.74,
+          "mean_anomaly": -0.11,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 26.91,
+          "mean_anomaly": 0.06,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 27.58,
+          "mean_anomaly": 0.72,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 27.4,
+          "mean_anomaly": 0.55,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 27.13,
+          "mean_anomaly": 0.28,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 26.65,
+          "mean_anomaly": -0.2,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 27.38,
+          "mean_anomaly": 0.53,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 27.63,
+          "mean_anomaly": 0.77,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 27.81,
+          "mean_anomaly": 0.94,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_great_barrier_reef_{year}.png",
+      "anomaly_png": "anomaly_great_barrier_reef_{year}.png"
+    },
+    {
+      "name": "Coral Triangle",
+      "slug": "coral_triangle",
+      "lat": -1.0,
+      "lon": 130.0,
+      "size": 9,
+      "bbox": {
+        "lon_min": 118,
+        "lon_max": 142,
+        "lat_min": -11,
+        "lat_max": 8
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 29.38,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 29.42,
+          "mean_anomaly": 0.04,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 29.36,
+          "mean_anomaly": -0.02,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 29.37,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 29.26,
+          "mean_anomaly": -0.11,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 29.48,
+          "mean_anomaly": 0.1,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 29.49,
+          "mean_anomaly": 0.11,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 29.67,
+          "mean_anomaly": 0.29,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 29.91,
+          "mean_anomaly": 0.53,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 29.49,
+          "mean_anomaly": 0.11,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 29.59,
+          "mean_anomaly": 0.21,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 29.78,
+          "mean_anomaly": 0.4,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 29.5,
+          "mean_anomaly": 0.12,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 29.22,
+          "mean_anomaly": -0.16,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 30.06,
+          "mean_anomaly": 0.68,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 29.9,
+          "mean_anomaly": 0.52,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 29.71,
+          "mean_anomaly": 0.33,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 29.34,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 29.93,
+          "mean_anomaly": 0.55,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 30.07,
+          "mean_anomaly": 0.69,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 30.06,
+          "mean_anomaly": 0.64,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_coral_triangle_{year}.png",
+      "anomaly_png": "anomaly_coral_triangle_{year}.png"
+    },
+    {
+      "name": "Mesoamerican Reef",
+      "slug": "mesoamerican_reef",
+      "lat": 17.5,
+      "lon": -87.5,
+      "size": 7,
+      "bbox": {
+        "lon_min": -88.5,
+        "lon_max": -85.5,
+        "lat_min": 15.5,
+        "lat_max": 21.5
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 28.31,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 28.29,
+          "mean_anomaly": -0.02,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 28.27,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 28.3,
+          "mean_anomaly": -0.0,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 28.3,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 28.38,
+          "mean_anomaly": 0.07,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 28.13,
+          "mean_anomaly": -0.17,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 28.18,
+          "mean_anomaly": -0.12,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 28.29,
+          "mean_anomaly": -0.02,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 28.32,
+          "mean_anomaly": 0.01,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 28.2,
+          "mean_anomaly": -0.1,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 28.41,
+          "mean_anomaly": 0.1,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 28.29,
+          "mean_anomaly": -0.02,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 28.5,
+          "mean_anomaly": 0.19,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 28.76,
+          "mean_anomaly": 0.45,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 28.58,
+          "mean_anomaly": 0.28,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 28.37,
+          "mean_anomaly": 0.06,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 28.7,
+          "mean_anomaly": 0.39,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 28.79,
+          "mean_anomaly": 0.48,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 28.51,
+          "mean_anomaly": 0.2,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 28.7,
+          "mean_anomaly": 0.35,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_mesoamerican_reef_{year}.png",
+      "anomaly_png": "anomaly_mesoamerican_reef_{year}.png"
+    },
+    {
+      "name": "Red Sea",
+      "slug": "red_sea",
+      "lat": 22.0,
+      "lon": 38.0,
+      "size": 6,
+      "bbox": {
+        "lon_min": 33,
+        "lon_max": 43,
+        "lat_min": 12,
+        "lat_max": 28
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 28.05,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 28.12,
+          "mean_anomaly": 0.07,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 28.0,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 28.07,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 28.04,
+          "mean_anomaly": -0.0,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 27.99,
+          "mean_anomaly": -0.06,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 27.97,
+          "mean_anomaly": -0.07,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 28.01,
+          "mean_anomaly": -0.03,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 28.52,
+          "mean_anomaly": 0.48,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 27.68,
+          "mean_anomaly": -0.36,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 27.99,
+          "mean_anomaly": -0.05,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 28.18,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 28.15,
+          "mean_anomaly": 0.1,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 28.22,
+          "mean_anomaly": 0.17,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 28.52,
+          "mean_anomaly": 0.47,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 28.13,
+          "mean_anomaly": 0.08,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 28.37,
+          "mean_anomaly": 0.32,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 28.5,
+          "mean_anomaly": 0.46,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 28.38,
+          "mean_anomaly": 0.34,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 28.44,
+          "mean_anomaly": 0.39,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 28.4,
+          "mean_anomaly": 0.29,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_red_sea_{year}.png",
+      "anomaly_png": "anomaly_red_sea_{year}.png"
+    },
+    {
+      "name": "Maldives",
+      "slug": "maldives",
+      "lat": 3.2,
+      "lon": 73.2,
+      "size": 6,
+      "bbox": {
+        "lon_min": 72,
+        "lon_max": 74,
+        "lat_min": -1,
+        "lat_max": 7.5
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 29.46,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 29.62,
+          "mean_anomaly": 0.16,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 29.48,
+          "mean_anomaly": 0.01,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 29.35,
+          "mean_anomaly": -0.11,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 29.36,
+          "mean_anomaly": -0.1,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 29.51,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 29.38,
+          "mean_anomaly": -0.08,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 29.61,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 29.51,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 29.43,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 29.67,
+          "mean_anomaly": 0.2,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 29.36,
+          "mean_anomaly": -0.11,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 29.49,
+          "mean_anomaly": 0.03,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 29.95,
+          "mean_anomaly": 0.49,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 29.79,
+          "mean_anomaly": 0.33,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 29.65,
+          "mean_anomaly": 0.19,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 29.76,
+          "mean_anomaly": 0.3,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 29.86,
+          "mean_anomaly": 0.4,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 29.96,
+          "mean_anomaly": 0.49,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 29.6,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 29.4,
+          "mean_anomaly": -0.06,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_maldives_{year}.png",
+      "anomaly_png": "anomaly_maldives_{year}.png"
+    },
+    {
+      "name": "Caribbean",
+      "slug": "caribbean",
+      "lat": 18.0,
+      "lon": -75.0,
+      "size": 7,
+      "bbox": {
+        "lon_min": -85,
+        "lon_max": -60,
+        "lat_min": 9,
+        "lat_max": 23
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 28.01,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 27.94,
+          "mean_anomaly": -0.07,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 27.83,
+          "mean_anomaly": -0.17,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 28.23,
+          "mean_anomaly": 0.23,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 28.02,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 28.0,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 27.75,
+          "mean_anomaly": -0.25,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 27.67,
+          "mean_anomaly": -0.33,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 28.26,
+          "mean_anomaly": 0.25,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 28.02,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 27.84,
+          "mean_anomaly": -0.16,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 27.97,
+          "mean_anomaly": -0.03,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 27.84,
+          "mean_anomaly": -0.16,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 27.95,
+          "mean_anomaly": -0.05,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 28.25,
+          "mean_anomaly": 0.24,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 28.11,
+          "mean_anomaly": 0.1,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 27.76,
+          "mean_anomaly": -0.24,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 28.14,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 28.34,
+          "mean_anomaly": 0.34,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 27.97,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 28.12,
+          "mean_anomaly": 0.07,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_caribbean_{year}.png",
+      "anomaly_png": "anomaly_caribbean_{year}.png"
+    },
+    {
+      "name": "Hawaiian Islands",
+      "slug": "hawaiian_islands",
+      "lat": 20.8,
+      "lon": -156.5,
+      "size": 5,
+      "bbox": {
+        "lon_min": -161,
+        "lon_max": -154,
+        "lat_min": 18,
+        "lat_max": 23
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 25.84,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 25.93,
+          "mean_anomaly": 0.1,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 26.22,
+          "mean_anomaly": 0.39,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 25.83,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 25.63,
+          "mean_anomaly": -0.21,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 25.57,
+          "mean_anomaly": -0.27,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 25.53,
+          "mean_anomaly": -0.31,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 25.41,
+          "mean_anomaly": -0.42,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 25.3,
+          "mean_anomaly": -0.53,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 25.4,
+          "mean_anomaly": -0.44,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 25.04,
+          "mean_anomaly": -0.8,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 25.72,
+          "mean_anomaly": -0.11,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 26.18,
+          "mean_anomaly": 0.35,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 26.38,
+          "mean_anomaly": 0.55,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 26.2,
+          "mean_anomaly": 0.36,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 26.25,
+          "mean_anomaly": 0.42,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 25.95,
+          "mean_anomaly": 0.11,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 26.5,
+          "mean_anomaly": 0.66,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 26.17,
+          "mean_anomaly": 0.33,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 25.79,
+          "mean_anomaly": -0.05,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 26.05,
+          "mean_anomaly": 0.21,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_hawaiian_islands_{year}.png",
+      "anomaly_png": "anomaly_hawaiian_islands_{year}.png"
+    },
+    {
+      "name": "Philippines",
+      "slug": "philippines",
+      "lat": 12.0,
+      "lon": 122.0,
+      "size": 7,
+      "bbox": {
+        "lon_min": 117,
+        "lon_max": 127,
+        "lat_min": 5,
+        "lat_max": 19
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 29.05,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 28.92,
+          "mean_anomaly": -0.12,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 28.83,
+          "mean_anomaly": -0.21,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 29.0,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 29.18,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 29.27,
+          "mean_anomaly": 0.23,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 29.29,
+          "mean_anomaly": 0.25,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 29.09,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 29.48,
+          "mean_anomaly": 0.44,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 28.98,
+          "mean_anomaly": -0.06,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 29.26,
+          "mean_anomaly": 0.22,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 29.36,
+          "mean_anomaly": 0.32,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 29.16,
+          "mean_anomaly": 0.12,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 29.18,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 29.52,
+          "mean_anomaly": 0.47,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 29.54,
+          "mean_anomaly": 0.5,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 29.28,
+          "mean_anomaly": 0.24,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 29.24,
+          "mean_anomaly": 0.2,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 29.6,
+          "mean_anomaly": 0.55,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 29.54,
+          "mean_anomaly": 0.5,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 29.6,
+          "mean_anomaly": 0.53,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_philippines_{year}.png",
+      "anomaly_png": "anomaly_philippines_{year}.png"
+    },
+    {
+      "name": "Fiji & South Pacific",
+      "slug": "fiji_south_pacific",
+      "lat": -17.0,
+      "lon": 179.0,
+      "size": 6,
+      "bbox": {
+        "lon_min": 176,
+        "lon_max": -178,
+        "lat_min": -22,
+        "lat_max": -12
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 27.7,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 27.45,
+          "mean_anomaly": -0.24,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 27.53,
+          "mean_anomaly": -0.17,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 27.81,
+          "mean_anomaly": 0.11,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 27.72,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 27.98,
+          "mean_anomaly": 0.28,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 27.79,
+          "mean_anomaly": 0.09,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 27.43,
+          "mean_anomaly": -0.27,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 27.75,
+          "mean_anomaly": 0.06,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 27.93,
+          "mean_anomaly": 0.24,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 27.54,
+          "mean_anomaly": -0.16,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 27.91,
+          "mean_anomaly": 0.21,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 27.54,
+          "mean_anomaly": -0.16,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 27.2,
+          "mean_anomaly": -0.5,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 27.75,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 27.96,
+          "mean_anomaly": 0.26,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 27.77,
+          "mean_anomaly": 0.07,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 27.92,
+          "mean_anomaly": 0.22,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 27.99,
+          "mean_anomaly": 0.29,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 27.88,
+          "mean_anomaly": 0.18,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 28.2,
+          "mean_anomaly": 0.51,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_fiji_south_pacific_{year}.png",
+      "anomaly_png": "anomaly_fiji_south_pacific_{year}.png"
+    },
+    {
+      "name": "East Africa",
+      "slug": "east_africa",
+      "lat": -8.0,
+      "lon": 40.0,
+      "size": 5,
+      "bbox": {
+        "lon_min": 38,
+        "lon_max": 44,
+        "lat_min": -13,
+        "lat_max": -3
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 27.81,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 27.84,
+          "mean_anomaly": 0.04,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 27.72,
+          "mean_anomaly": -0.09,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 27.75,
+          "mean_anomaly": -0.06,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 27.81,
+          "mean_anomaly": 0.0,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 27.91,
+          "mean_anomaly": 0.1,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 27.77,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 28.11,
+          "mean_anomaly": 0.31,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 27.99,
+          "mean_anomaly": 0.19,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 28.14,
+          "mean_anomaly": 0.33,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 27.8,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 27.87,
+          "mean_anomaly": 0.07,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 27.95,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 27.98,
+          "mean_anomaly": 0.17,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 27.95,
+          "mean_anomaly": 0.13,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 28.21,
+          "mean_anomaly": 0.4,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 27.99,
+          "mean_anomaly": 0.18,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 28.41,
+          "mean_anomaly": 0.61,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 28.42,
+          "mean_anomaly": 0.61,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 27.96,
+          "mean_anomaly": 0.15,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 27.64,
+          "mean_anomaly": -0.16,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_east_africa_{year}.png",
+      "anomaly_png": "anomaly_east_africa_{year}.png"
+    },
+    {
+      "name": "Florida Keys",
+      "slug": "florida_keys",
+      "lat": 24.6,
+      "lon": -81.5,
+      "size": 5,
+      "bbox": {
+        "lon_min": -83,
+        "lon_max": -80,
+        "lat_min": 24,
+        "lat_max": 26
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 26.78,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 26.83,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 26.63,
+          "mean_anomaly": -0.14,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 26.53,
+          "mean_anomaly": -0.26,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 26.87,
+          "mean_anomaly": 0.09,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 27.05,
+          "mean_anomaly": 0.27,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 26.74,
+          "mean_anomaly": -0.03,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 27.02,
+          "mean_anomaly": 0.23,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 26.32,
+          "mean_anomaly": -0.45,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 26.9,
+          "mean_anomaly": 0.11,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 27.07,
+          "mean_anomaly": 0.29,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 27.01,
+          "mean_anomaly": 0.23,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 27.33,
+          "mean_anomaly": 0.55,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 27.67,
+          "mean_anomaly": 0.89,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 27.37,
+          "mean_anomaly": 0.58,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 27.4,
+          "mean_anomaly": 0.61,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 27.22,
+          "mean_anomaly": 0.44,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 27.84,
+          "mean_anomaly": 1.05,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 27.71,
+          "mean_anomaly": 0.93,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 27.27,
+          "mean_anomaly": 0.48,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 27.67,
+          "mean_anomaly": 0.88,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_florida_keys_{year}.png",
+      "anomaly_png": "anomaly_florida_keys_{year}.png"
+    },
+    {
+      "name": "French Polynesia",
+      "slug": "french_polynesia",
+      "lat": -17.5,
+      "lon": -149.5,
+      "size": 5,
+      "bbox": {
+        "lon_min": -153,
+        "lon_max": -146,
+        "lat_min": -21,
+        "lat_max": -14
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 27.78,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 27.86,
+          "mean_anomaly": 0.08,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 27.64,
+          "mean_anomaly": -0.13,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 27.67,
+          "mean_anomaly": -0.11,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 27.83,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 27.88,
+          "mean_anomaly": 0.1,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 27.42,
+          "mean_anomaly": -0.35,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 27.77,
+          "mean_anomaly": -0.01,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 27.56,
+          "mean_anomaly": -0.21,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 27.02,
+          "mean_anomaly": -0.76,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 27.73,
+          "mean_anomaly": -0.04,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 27.33,
+          "mean_anomaly": -0.44,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 27.55,
+          "mean_anomaly": -0.22,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 27.69,
+          "mean_anomaly": -0.08,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 27.92,
+          "mean_anomaly": 0.15,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 27.97,
+          "mean_anomaly": 0.19,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 27.8,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 27.95,
+          "mean_anomaly": 0.18,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 27.92,
+          "mean_anomaly": 0.14,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 27.78,
+          "mean_anomaly": 0.0,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 27.24,
+          "mean_anomaly": -0.54,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_french_polynesia_{year}.png",
+      "anomaly_png": "anomaly_french_polynesia_{year}.png"
+    },
+    {
+      "name": "Andaman Sea",
+      "slug": "andaman_sea",
+      "lat": 8.0,
+      "lon": 98.0,
+      "size": 5,
+      "bbox": {
+        "lon_min": 95,
+        "lon_max": 100,
+        "lat_min": 4,
+        "lat_max": 14
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 29.65,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 29.7,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 29.67,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 29.8,
+          "mean_anomaly": 0.15,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 29.67,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 29.42,
+          "mean_anomaly": -0.23,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 29.53,
+          "mean_anomaly": -0.12,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 29.62,
+          "mean_anomaly": -0.03,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 30.15,
+          "mean_anomaly": 0.5,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 29.59,
+          "mean_anomaly": -0.06,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 29.8,
+          "mean_anomaly": 0.15,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 29.76,
+          "mean_anomaly": 0.11,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 29.8,
+          "mean_anomaly": 0.15,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 30.06,
+          "mean_anomaly": 0.41,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 30.03,
+          "mean_anomaly": 0.38,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 29.94,
+          "mean_anomaly": 0.29,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 29.94,
+          "mean_anomaly": 0.29,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 30.08,
+          "mean_anomaly": 0.43,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 30.01,
+          "mean_anomaly": 0.36,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 29.99,
+          "mean_anomaly": 0.35,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 29.97,
+          "mean_anomaly": 0.3,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_andaman_sea_{year}.png",
+      "anomaly_png": "anomaly_andaman_sea_{year}.png"
+    },
+    {
+      "name": "Gal\u00e1pagos",
+      "slug": "galapagos",
+      "lat": -0.5,
+      "lon": -90.5,
+      "size": 4,
+      "bbox": {
+        "lon_min": -92,
+        "lon_max": -89,
+        "lat_min": -1.8,
+        "lat_max": 1
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 23.68,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 23.75,
+          "mean_anomaly": 0.07,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 23.65,
+          "mean_anomaly": -0.03,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 23.72,
+          "mean_anomaly": 0.03,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 24.59,
+          "mean_anomaly": 0.9,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 22.73,
+          "mean_anomaly": -0.96,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 24.85,
+          "mean_anomaly": 1.16,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 24.64,
+          "mean_anomaly": 0.95,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 23.38,
+          "mean_anomaly": -0.31,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 24.53,
+          "mean_anomaly": 0.85,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 24.61,
+          "mean_anomaly": 0.93,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 23.32,
+          "mean_anomaly": -0.36,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 24.68,
+          "mean_anomaly": 0.99,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 25.85,
+          "mean_anomaly": 2.17,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 24.17,
+          "mean_anomaly": 0.48,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 24.26,
+          "mean_anomaly": 0.57,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 24.08,
+          "mean_anomaly": 0.39,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 24.04,
+          "mean_anomaly": 0.35,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 23.66,
+          "mean_anomaly": -0.02,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 24.0,
+          "mean_anomaly": 0.31,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 23.09,
+          "mean_anomaly": -0.59,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_galapagos_{year}.png",
+      "anomaly_png": "anomaly_galapagos_{year}.png"
+    },
+    {
+      "name": "Persian Gulf",
+      "slug": "persian_gulf",
+      "lat": 26.5,
+      "lon": 52.0,
+      "size": 4,
+      "bbox": {
+        "lon_min": 48,
+        "lon_max": 56,
+        "lat_min": 24,
+        "lat_max": 30
+      },
+      "baseline_period": "2003-2007",
+      "baseline_mean_sst": 26.77,
+      "years": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "yearly": {
+        "2003": {
+          "mean_sst": 26.72,
+          "mean_anomaly": -0.08,
+          "files_used": 12
+        },
+        "2004": {
+          "mean_sst": 26.81,
+          "mean_anomaly": 0.02,
+          "files_used": 12
+        },
+        "2005": {
+          "mean_sst": 26.55,
+          "mean_anomaly": -0.24,
+          "files_used": 12
+        },
+        "2006": {
+          "mean_sst": 27.07,
+          "mean_anomaly": 0.29,
+          "files_used": 12
+        },
+        "2007": {
+          "mean_sst": 26.81,
+          "mean_anomaly": 0.0,
+          "files_used": 12
+        },
+        "2008": {
+          "mean_sst": 26.5,
+          "mean_anomaly": -0.3,
+          "files_used": 12
+        },
+        "2009": {
+          "mean_sst": 26.48,
+          "mean_anomaly": -0.3,
+          "files_used": 12
+        },
+        "2010": {
+          "mean_sst": 27.48,
+          "mean_anomaly": 0.68,
+          "files_used": 12
+        },
+        "2011": {
+          "mean_sst": 26.67,
+          "mean_anomaly": -0.12,
+          "files_used": 12
+        },
+        "2012": {
+          "mean_sst": 26.84,
+          "mean_anomaly": 0.05,
+          "files_used": 12
+        },
+        "2013": {
+          "mean_sst": 26.77,
+          "mean_anomaly": -0.02,
+          "files_used": 12
+        },
+        "2014": {
+          "mean_sst": 26.95,
+          "mean_anomaly": 0.17,
+          "files_used": 12
+        },
+        "2015": {
+          "mean_sst": 27.32,
+          "mean_anomaly": 0.53,
+          "files_used": 12
+        },
+        "2016": {
+          "mean_sst": 27.12,
+          "mean_anomaly": 0.31,
+          "files_used": 12
+        },
+        "2017": {
+          "mean_sst": 27.48,
+          "mean_anomaly": 0.67,
+          "files_used": 12
+        },
+        "2018": {
+          "mean_sst": 27.52,
+          "mean_anomaly": 0.75,
+          "files_used": 12
+        },
+        "2019": {
+          "mean_sst": 27.58,
+          "mean_anomaly": 0.8,
+          "files_used": 12
+        },
+        "2020": {
+          "mean_sst": 27.71,
+          "mean_anomaly": 0.94,
+          "files_used": 12
+        },
+        "2021": {
+          "mean_sst": 27.89,
+          "mean_anomaly": 1.09,
+          "files_used": 12
+        },
+        "2022": {
+          "mean_sst": 27.5,
+          "mean_anomaly": 0.75,
+          "files_used": 12
+        }
+      },
+      "sst_png": "sst_persian_gulf_{year}.png",
+      "anomaly_png": "anomaly_persian_gulf_{year}.png"
+    }
+  ]
+}
