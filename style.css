@@ -2385,3 +2385,291 @@ em {
   color: var(--c-teal-deep);
   margin: var(--s-1) 0 var(--s-3);
 }
+
+/* ============================================ */
+/*  SECTION · WATER STRESS CARDS                 */
+/* ============================================ */
+
+.stress-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.stress-cards-wrap {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 640px;
+}
+
+.stress-card {
+  flex: 1;
+  background: white;
+  border: 1px solid rgba(4, 84, 107, 0.12);
+  border-radius: 12px;
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stress-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stress-card__year {
+  font-family: var(--f-display);
+  font-size: 2.4rem;
+  font-weight: 600;
+  font-variation-settings: "opsz" 144;
+  color: var(--c-teal-deep);
+  margin-bottom: 1.2rem;
+  line-height: 1;
+}
+
+.stress-card__year--hot {
+  color: var(--c-coral);
+}
+
+.stress-row {
+  margin-bottom: 1rem;
+  padding: 0.35rem;
+  border-radius: 6px;
+  transition: background 0.4s ease;
+}
+
+.stress-row.is-highlighted {
+  background: rgba(224, 92, 58, 0.06);
+}
+
+.stress-row__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.3rem;
+  gap: 0.5rem;
+}
+
+.stress-row__label {
+  font-family: var(--f-body);
+  font-size: 0.72rem;
+  color: var(--c-ink-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stress-row__value {
+  font-family: var(--f-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--c-teal-deep);
+  white-space: nowrap;
+}
+
+.stress-bar__track {
+  position: relative;
+  height: 5px;
+  background: rgba(4, 84, 107, 0.1);
+  border-radius: 3px;
+  margin-bottom: 0.3rem;
+  overflow: visible;
+}
+
+.stress-bar__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 3px;
+  width: 0%;
+}
+
+/* the tick marking the 20-yr mean */
+.stress-bar__mean {
+  position: absolute;
+  top: -4px;
+  width: 2px;
+  height: 13px;
+  background: rgba(4, 84, 107, 0.35);
+  border-radius: 1px;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.4s ease 0.7s;
+}
+
+.stress-bar__mean.is-visible {
+  opacity: 1;
+}
+
+.stress-row__caption {
+  font-size: 0.72rem;
+  color: var(--c-ink-mute);
+}
+
+.stress-row__caption.is-above {
+  color: var(--c-coral);
+  font-weight: 500;
+}
+
+.stress-row__caption.is-below {
+  color: var(--c-teal-deep);
+}
+
+#stress {
+  background: #a8d4dd;
+  position: relative;
+}
+
+#stress::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(180deg,
+      transparent 0%,
+      #f4fbfc 100%);
+  pointer-events: none;
+}
+
+/* ============================================ */
+/*  INDICATOR EXPLAINER CARDS                    */
+/* ============================================ */
+.ind-wrap {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+  align-items: flex-start;
+}
+
+.ind-card {
+  flex: 1;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(4,84,107,0.35);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.ind-card:hover {
+  border-color: rgba(4,84,107,0.6);
+}
+
+.ind-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  gap: 8px;
+}
+
+.ind-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ind-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.ind-icon--chl { background: rgba(42,122,84,0.18); color: #1e6640; }
+.ind-icon--adg { background: rgba(176,106,16,0.18); color: #8a5008; }
+
+.ind-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--c-teal-deep);
+}
+
+.ind-unit {
+  font-size: 0.68rem;
+  color: var(--c-ink-mute);
+  margin-top: 2px;
+}
+
+.ind-chevron {
+  font-size: 14px;
+  color: var(--c-teal-deep);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.ind-card.is-open .ind-chevron {
+  transform: rotate(180deg);
+}
+
+.ind-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.ind-card.is-open .ind-body {
+  max-height: 300px;
+}
+
+.ind-body-inner {
+  padding: 0 14px 14px;
+}
+
+.ind-divider {
+  height: 1px;
+  background: rgba(4,84,107,0.2);
+  margin-bottom: 12px;
+}
+
+.ind-body p {
+  font-size: 0.78rem;
+  color: var(--c-ink);
+  line-height: 1.7;
+  margin: 0 0 8px;
+}
+
+.ind-body p:last-child {
+  margin: 0;
+}
+
+.ind-body strong {
+  font-weight: 600;
+  color: var(--c-teal-deep);
+}
+
+/* ============================================ */
+/*  INTERSTITIAL · stress transition             */
+/* ============================================ */
+.interstitial--stress {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(180deg,
+      var(--c-deep-blue) 0%,
+      #a8d4dd 100%);
+}
+
+.interstitial--stress .interstitial__lead {
+  color: #f0f6f8;
+}
+
+.interstitial--stress .interstitial__sub {
+  color: #c4d6dd;
+}

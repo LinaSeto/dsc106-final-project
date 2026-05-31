@@ -159,11 +159,24 @@ function initScrollytelling() {
             response.element.classList.remove("is-active");
         });
 
+    // ===== Section · water stress cards =====
+    const stressScroller = scrollama();
+    stressScroller
+        .setup({ step: "#stress .step", offset: 0.5 })
+        .onStepEnter((response) => {
+            response.element.classList.add("is-active");
+            StressModule.transitionTo(+response.element.dataset.step);
+        })
+        .onStepExit((response) => {
+            response.element.classList.remove("is-active");
+        });
+
     window.addEventListener("resize", () => {
         baselineScroller.resize();
         bleachScroller.resize();
         microvarScroller.resize();
         mesoScroller.resize();
+        stressScroller.resize();
     });
 }
 
@@ -2084,7 +2097,7 @@ async function initReefExplore() {
     // label and back-button
     const box = d3.select(stage.parentNode);
     reefState.bar = box.insert("div", "#reef-map").attr("class", "reef-bar");  // no display:none
-    reefState.label   = reefState.bar.append("span").attr("class", "reef-label").text("All reefs - global view");
+    reefState.label = reefState.bar.append("span").attr("class", "reef-label").text("All reefs - global view");
     reefState.backBtn = reefState.bar.append("button")
         .attr("class", "reef-back").attr("type", "button")
         .text("← Back to world map").style("display", "none").on("click", zoomOutReef);
@@ -2190,7 +2203,7 @@ function zoomOutReef() {
     reefState.overlays.selectAll("*").remove();
     reefState.spotlight.selectAll("*").remove();
     reefState.pixelData = null;
-    reefState.pixelKey = null; 
+    reefState.pixelKey = null;
 }
 
 function redrawReef() {
@@ -2263,8 +2276,8 @@ function renderReefLayer() {
 function updateReefLegend() {
     const u = unitSymbol();
     const bar = document.getElementById("reef-legend-bar");
-    const lo  = document.getElementById("reef-legend-min");
-    const hi  = document.getElementById("reef-legend-max");
+    const lo = document.getElementById("reef-legend-min");
+    const hi = document.getElementById("reef-legend-max");
     if (!bar || !lo || !hi) return;
     if (reefState.mode === "sst") {
         bar.classList.remove("is-anomaly"); bar.classList.add("is-sst");
@@ -2374,7 +2387,7 @@ function handleReefPixelHover(event) {
         .style("opacity", 1)
         .html(`<strong>${reef.name}</strong> · ${reefState.year}<br>${body}`)
         .style("left", `${event.clientX + 14}px`)
-        .style("top",  `${event.clientY + 14}px`);
+        .style("top", `${event.clientY + 14}px`);
 }
 
 /* ============================================ */
@@ -2383,7 +2396,7 @@ function handleReefPixelHover(event) {
 
 function drawCoral(parent, cx, baseY, h, color) {
     const g = parent.append("g").attr("transform", `translate(${cx},${baseY})`);
-    const branches = [{a:-30,l:0.6},{a:-16,l:0.92},{a:-4,l:1},{a:8,l:0.95},{a:22,l:0.72},{a:34,l:0.55}];
+    const branches = [{ a: -30, l: 0.6 }, { a: -16, l: 0.92 }, { a: -4, l: 1 }, { a: 8, l: 0.95 }, { a: 22, l: 0.72 }, { a: 34, l: 0.55 }];
     const w = Math.max(4, h * 0.14);
     branches.forEach(b => {
         const rad = b.a * Math.PI / 180, len = h * b.l;
@@ -2416,16 +2429,16 @@ function wireReefGuesser() {
         .attr("stroke", "#cfe8ef").attr("stroke-width", 3);
 
     const corals = [
-        {x: 30,  h: 56}, {x: 72,  h: 90}, {x: 112, h: 50},
-        {x: 152, h: 100}, {x: 196, h: 64}, {x: 238, h: 86},
-        {x: 280, h: 52}, {x: 320, h: 96}, {x: 362, h: 68},
-        {x: 404, h: 88}, {x: 444, h: 56}, {x: 486, h: 94},
-        {x: 526, h: 66}, {x: 566, h: 50},
+        { x: 30, h: 56 }, { x: 72, h: 90 }, { x: 112, h: 50 },
+        { x: 152, h: 100 }, { x: 196, h: 64 }, { x: 238, h: 86 },
+        { x: 280, h: 52 }, { x: 320, h: 96 }, { x: 362, h: 68 },
+        { x: 404, h: 88 }, { x: 444, h: 56 }, { x: 486, h: 94 },
+        { x: 526, h: 66 }, { x: 566, h: 50 },
     ];
 
-    const healthy  = svg.append("g");
+    const healthy = svg.append("g");
     const bleached = svg.append("g").attr("clip-path", "url(#bleach-clip)");
-    corals.forEach(c => drawCoral(healthy,  c.x, BASE, c.h, CORAL));
+    corals.forEach(c => drawCoral(healthy, c.x, BASE, c.h, CORAL));
     corals.forEach(c => drawCoral(bleached, c.x, BASE, c.h, BLEACH));
 
     // divider line marking the bleach front
@@ -2437,7 +2450,7 @@ function wireReefGuesser() {
     const valOut = document.getElementById("reef-guess-val");
     const submit = document.getElementById("reef-guess-submit");
     const reveal = document.getElementById("reef-guess-reveal");
-    const msg    = document.getElementById("reef-guess-msg");
+    const msg = document.getElementById("reef-guess-msg");
 
     function setPct(pct) {
         const x = (pct / 100) * W;
@@ -2469,6 +2482,146 @@ function wireReefGuesser() {
 }
 
 /* ============================================ */
+/*  STRESS CARDS MODULE                         */
+/*  Drop into global.js beside other modules    */
+/* ============================================ */
+const StressModule = (function () {
+
+    const DATA = {
+        2016: { sst: 27.774, chl: 0.1875, adg: 0.011209 },
+        2022: { sst: 27.885, chl: 0.21662, adg: 0.012847 }
+    };
+    const LTM = { sst: 26.877, chl: 0.19507, adg: 0.011879 };
+    // scale ceilings — bar reaches 100% at these values
+    const MAX = { sst: 28.5, chl: 0.26, adg: 0.0158 };
+
+    const INDICATORS = [
+        { key: 'sst', label: 'Sea surface temp.', unit: '°C', decimals: 2, color: 'var(--c-coral)' },
+        { key: 'chl', label: 'Chlorophyll-a', unit: 'mg m⁻³', decimals: 4, color: '#2a8a5e' },
+        { key: 'adg', label: 'Dissolved organics a_dg', unit: 'm⁻¹', decimals: 5, color: '#c47a1e' }
+    ];
+
+    function pctAbove(val, mean) {
+        return ((val - mean) / mean * 100).toFixed(1);
+    }
+    function barW(val, max) {
+        return Math.min(100, (val / max) * 100).toFixed(2);
+    }
+    function meanW(mean, max) {
+        return Math.min(100, (mean / max) * 100).toFixed(2);
+    }
+
+    function buildCard(year) {
+        const d = DATA[year];
+        const rows = INDICATORS.map(ind => {
+            const val = d[ind.key];
+            const pct = pctAbove(val, LTM[ind.key]);
+            const above = parseFloat(pct) > 0;
+            const sign = above ? '+' : '';
+            return `
+        <div class="stress-row" data-key="${ind.key}">
+          <div class="stress-row__header">
+            <span class="stress-row__label">${ind.label}</span>
+            <span class="stress-row__value">${val.toFixed(ind.decimals)} ${ind.unit}</span>
+          </div>
+          <div class="stress-bar__track">
+            <div class="stress-bar__fill"
+                 data-target="${barW(val, MAX[ind.key])}"
+                 style="width:0%;background:${ind.color};"></div>
+            <div class="stress-bar__mean"
+                 style="left:${meanW(LTM[ind.key], MAX[ind.key])}%;"></div>
+          </div>
+          <div class="stress-row__caption ${above ? 'is-above' : 'is-below'}">
+            ${sign}${pct}% vs. 20-year average
+          </div>
+        </div>`;
+        }).join('');
+
+        return `
+      <div class="stress-card" id="stress-card-${year}">
+        <div class="stress-card__year ${year === 2022 ? 'stress-card__year--hot' : ''}">${year}</div>
+        ${rows}
+      </div>`;
+    }
+
+    function animateBars(cardEl) {
+        cardEl.querySelectorAll('.stress-bar__fill').forEach((bar, i) => {
+            setTimeout(() => {
+                bar.style.transition = 'width 0.85s cubic-bezier(0.4,0,0.2,1)';
+                bar.style.width = bar.dataset.target + '%';
+            }, i * 200);
+        });
+        cardEl.querySelectorAll('.stress-bar__mean').forEach((m, i) => {
+            setTimeout(() => m.classList.add('is-visible'), i * 200 + 700);
+        });
+    }
+
+    function resetBars(cardEl) {
+        cardEl.querySelectorAll('.stress-bar__fill').forEach(bar => {
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+        });
+        cardEl.querySelectorAll('.stress-bar__mean').forEach(m => {
+            m.classList.remove('is-visible');
+        });
+        cardEl.querySelectorAll('.stress-row').forEach(r => {
+            r.classList.remove('is-highlighted');
+        });
+    }
+
+    let currentStep = -1;
+
+    function transitionTo(stepIdx) {
+        if (stepIdx === currentStep) return;
+        currentStep = stepIdx;
+
+        const card16 = document.getElementById('stress-card-2016');
+        const card22 = document.getElementById('stress-card-2022');
+        if (!card16 || !card22) return;
+
+        if (stepIdx === 0) {
+            card22.classList.remove('is-visible');
+            resetBars(card16);
+            card16.classList.add('is-visible');
+            setTimeout(() => animateBars(card16), 120);
+        }
+
+        if (stepIdx === 1) {
+            card16.classList.add('is-visible');
+            card22.classList.add('is-visible');
+            resetBars(card22);
+            setTimeout(() => animateBars(card22), 120);
+            card22.querySelectorAll('.stress-row').forEach(row => {
+                const caption = row.querySelector('.stress-row__caption');
+                if (caption && caption.classList.contains('is-above')) {
+                    row.classList.add('is-highlighted');
+                }
+            });
+        }
+    }
+
+    function init() {
+        const stage = document.getElementById('stress-stage');
+        if (!stage) return;
+        stage.innerHTML = `
+      <div class="stress-cards-wrap">
+        ${buildCard(2016)}
+        ${buildCard(2022)}
+      </div>`;
+    }
+
+    return { init, transitionTo };
+})();
+
+function initIndicatorCards() {
+    document.querySelectorAll('.ind-card').forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('is-open');
+        });
+    });
+}
+
+/* ============================================ */
 /*  ENTRY POINT                                  */
 /* ============================================ */
 
@@ -2488,5 +2641,7 @@ document.addEventListener("DOMContentLoaded", () => {
         initBleachToggle();
         initMicroVarControls();
         initReefExplore();
+        StressModule.init();
+        initIndicatorCards();
     });
 });

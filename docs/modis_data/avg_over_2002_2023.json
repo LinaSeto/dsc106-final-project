@@ -1,5 +1,7 @@
 {
-    "sst_mean_overall": 26.88062203673511,
-    "chl_mean_overall": 0.1959581280953164,
-    "adg_mean_overall": 26.88062203673511
+  "long_term_means": {
+    "sst": 26.8771,
+    "chl": 0.195069,
+    "adg": 0.011879
+  }
 }
