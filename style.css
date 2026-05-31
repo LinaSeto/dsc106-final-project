@@ -31,9 +31,7 @@
   --c-amber-deep: #b87a1e;
   --c-amber-pale: rgba(217, 154, 60, 0.18);
   --c-bleach-bg: #a8d4dd;
-  /* the teal you already have */
   --c-micro-bg: #82c0ce;
-  /* one shade deeper — begins the descent */
   --c-deep-blue: #0c3a52;
 
   /* Type */
@@ -2387,6 +2385,51 @@ em {
 }
 
 /* ============================================ */
+/*  IMAGES AND ARTICLES                         */
+/* ============================================ */
+/* --- Gallery images + captions --- */
+.explore__shot {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.explore__shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.explore__shot figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.72rem;
+  color: #fff;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.65));
+}
+
+.explore__credit {
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* --- Action steps --- */
+.explore__actions { list-style: none; padding: 0; margin: 0; }
+.explore__actions li {
+  margin-bottom: var(--s-3);
+  line-height: 1.5;
+}
+.explore__actions strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--c-deep-blue, #04546b);
+}
+
+/* ============================================ */
 /*  SECTION · WATER STRESS CARDS                 */
 /* ============================================ */
 
@@ -2552,8 +2595,8 @@ em {
 
 .ind-card {
   flex: 1;
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(4,84,107,0.35);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(4, 84, 107, 0.35);
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
@@ -2561,7 +2604,7 @@ em {
 }
 
 .ind-card:hover {
-  border-color: rgba(4,84,107,0.6);
+  border-color: rgba(4, 84, 107, 0.6);
 }
 
 .ind-header {
@@ -2589,8 +2632,15 @@ em {
   flex-shrink: 0;
 }
 
-.ind-icon--chl { background: rgba(42,122,84,0.18); color: #1e6640; }
-.ind-icon--adg { background: rgba(176,106,16,0.18); color: #8a5008; }
+.ind-icon--chl {
+  background: rgba(42, 122, 84, 0.18);
+  color: #1e6640;
+}
+
+.ind-icon--adg {
+  background: rgba(176, 106, 16, 0.18);
+  color: #8a5008;
+}
 
 .ind-name {
   font-size: 0.78rem;
@@ -2631,7 +2681,7 @@ em {
 
 .ind-divider {
   height: 1px;
-  background: rgba(4,84,107,0.2);
+  background: rgba(4, 84, 107, 0.2);
   margin-bottom: 12px;
 }
 
