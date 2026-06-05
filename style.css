@@ -126,6 +126,34 @@ em {
   /* ← stays at teal-bright at bottom */
 }
 
+/* ── Guided walkthrough box  ── */
+.intro__walkthrough {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  background: color-mix(in srgb, var(--c-teal-bright) 60%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in srgb, var(--c-teal-bright) 80%, transparent);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  box-shadow: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.intro__walkthrough:hover {
+  background: color-mix(in srgb, var(--c-teal-bright) 85%, transparent);
+  color: #fff;
+}
+
 /* Layer 1: animated caustics (light dappling on water) */
 .intro__water {
   position: absolute;
@@ -2418,11 +2446,17 @@ em {
 }
 
 /* --- Action steps --- */
-.explore__actions { list-style: none; padding: 0; margin: 0; }
+.explore__actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .explore__actions li {
   margin-bottom: var(--s-3);
   line-height: 1.5;
 }
+
 .explore__actions strong {
   display: block;
   margin-bottom: 0.15rem;
